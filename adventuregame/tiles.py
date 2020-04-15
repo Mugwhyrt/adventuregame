@@ -371,3 +371,25 @@ class SnakePitRoom(MapTile):
 
     def modify_player(self, player):
         player.hp = 0
+
+"""
+
+SHOP ROOMS
+
+"""
+
+class ShopRoom(MapTile):
+    def __init__(self, x, y, inventory):
+        self.inventory = inventory
+        super().__init__(x, y)
+
+    def modify_player(self, the_player):
+        pass
+    
+    def available_actions(self):
+        moves = self.adjacent_moves()
+        moves.append(actions.ViewInventory())
+        moves.append(actions.Heal())
+        if (len(self.inventory) > 0):
+            moves.append(actions.Buy(inventory=self.inventory))
+        return moves
