@@ -134,18 +134,29 @@ class CoffinRoom(MapTile):
         #Room has no action on player
         pass
 
+"""
 
+LOOT ROOMS
+
+"""
 class LootRoom(MapTile):
     """A room that adds something to the player's inventory"""
-    def __init__(self, x, y, item):
+    def __init__(self, x, y, item, itemText):
         self.item = item
+        self.itemText = itemText
         super().__init__(x, y)
 
-    def add_loot(self, the_player):
-        the_player.inventory.append(self.item)
-
     def modify_player(self, the_player):
-        self.add_loot(the_player)
+        #self.add_loot(the_player)
+        pass
+
+    def available_actions(self):
+        moves = self.adjacent_moves()
+        moves.append(actions.ViewInventory())
+        moves.append(actions.Heal())
+        if self.item.available: 
+            moves.append(actions.Search(item = self.item, text = self.itemText))
+        return moves
 
 
 class FindDaggerRoom(LootRoom):
