@@ -264,7 +264,11 @@ class OgreTreasureRoom(LootRoom):
             """
         return text
 
+"""
 
+ENEMY ROOMS
+
+"""   
 
 class EnemyRoom(MapTile):
     def __init__(self, x, y, enemy):
@@ -280,7 +284,10 @@ class EnemyRoom(MapTile):
         if self.enemy.is_alive():
             return [actions.Flee(tile=self), actions.Attack(enemy=self.enemy)]
         else:
-            return self.adjacent_moves()
+            moves = self.adjacent_moves()
+            moves.append(actions.ViewInventory())
+            moves.append(actions.Heal())
+            return moves
 
 
 class GiantSpiderRoom(EnemyRoom):
