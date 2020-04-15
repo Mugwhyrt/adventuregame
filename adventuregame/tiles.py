@@ -147,7 +147,6 @@ class LootRoom(MapTile):
         super().__init__(x, y)
 
     def modify_player(self, the_player):
-        #self.add_loot(the_player)
         pass
 
     def available_actions(self):
