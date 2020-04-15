@@ -459,4 +459,6 @@ class LockedDoor(MapTile):
             
         return text
 
-
+class LockedDoor_N(LockedDoor):
+    def __init__(self, x, y):
+        super().__init__(x, y, ['n'])
