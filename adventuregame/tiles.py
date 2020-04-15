@@ -160,23 +160,110 @@ class LootRoom(MapTile):
 
 class FindDaggerRoom(LootRoom):
     def __init__(self, x, y):
-        super().__init__(x, y, items.Dagger())
+        super().__init__(x, y, items.Dagger(), "It's a dagger!")
 
     def intro_text(self):
-        return """
-        You notice something shiny in the corner.
-        It's a dagger! You pick it up.
+        text = """
+        Another dirty part of the cave.
         """
+        if self.item.available:
+            text += "You notice something shiny in the corner."
+        return text
 
 
 class Find5GoldRoom(LootRoom):
     def __init__(self, x, y):
-        super().__init__(x, y, items.Gold(5))
+        super().__init__(x, y, items.Gold(5), "It's 5 gold coins!")
 
     def intro_text(self):
-        return """
-        Someone dropped a 5 gold piece. You pick it up.
+        text = """
+        Another room."""
+        
+        if self.item.available:
+            text += " Something shines from under the dirt\n"
+        return text
+    
+class RockSlideRoom(LootRoom):
+    def __init__(self, x, y):
+        super().__init__(x, y, items.Gold(5), "It's 5 gold coins!")
+
+    def intro_text(self):
+        text = """
+        A pile of rocks blocks the way, but with a bit of work
+        you managed to clear enough out of the way to crawl through.
         """
+        if self.item.available:
+            text +="""
+        Something shines from under the pile of remaining rocks
+        """
+        return text
+    
+class OldJailRoom(LootRoom):
+    def __init__(self, x, y):
+        super().__init__(x, y, items.Dagger(), "It's a dagger!")
+    def intro_text(self):
+        text = """
+        An old jail cell littered with garbage.
+        """
+        
+        if self.item.available:
+            text += """
+        Maybe there's something useful to be found.
+        """
+        return text
+
+class CauldronRoom(LootRoom):
+    def __init__(self, x, y):
+        super().__init__(x, y, items.Sword(), "It's a sword!")
+    def intro_text(self):
+        text = """
+        A large cauldron sits at the center of the room.
+        The pile of human bones and smell of rotting flesh
+        tells you more than you want to know about the witch's
+        dietary habits.
+        """
+        
+        if self.item.available:
+            text += """
+        It looks like the loot of former adventurers is mixed in with the bones.
+            """
+                
+        return text
+
+class StoreRoom(LootRoom):
+    def __init__(self, x, y):
+        super().__init__(x, y, items.Hardtack(), "It's a mostly not moldy piece of hardtack!")
+    def intro_text(self):
+        text = """
+        It's a store room! Crates and barrels line the wall.
+        Most seem too rotted and waterlogged to be worth checking.
+        """
+        if self.item.available:
+            text += """
+        But there is at least one barrel has managed to avoid complete ruin.
+        """
+        return text
+    
+class OgreTreasureRoom(LootRoom):
+    def __init__(self, x, y):
+        super().__init__(x, y, items.Gold(300), "It's a treasure chest filled with gold coins!")
+
+    def intro_text(self):
+        text = """
+        It's a room fit for an ogre. A nest of animal skins makes 
+        up one corner of the room. There is a distinctive ogre-ish musk
+        that fills the air and you do all you can to hold back your lunch.
+        """
+        if self.item.available:
+            text += """
+        A large wooden chest sits in the other corner of the room
+            """
+        else:
+            text += """
+        A large, empty wooden chest sits in the other corner of the room
+            """
+        return text
+
 
 
 class EnemyRoom(MapTile):
