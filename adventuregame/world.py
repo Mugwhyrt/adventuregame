@@ -1,3 +1,5 @@
+import tiles
+
 __author__ = 'Phillip Johnson'
 
 _world = {}
@@ -25,6 +27,6 @@ def load_tiles():
             if tile_name == 'StartingRoom':
                 global starting_position
                 starting_position = (x, y)
-            _world[(x, y)] = None if tile_name == '' else getattr(__import__('tiles'), tile_name)(x, y)
+            _world[(x, y)] = None if tile_name == '' else getattr(tiles, tile_name)(x, y)
 
 
