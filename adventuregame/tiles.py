@@ -64,7 +64,7 @@ class StartingRoom(MapTile):
     def modify_player(self, the_player):
         #Room has no action on player
         pass
-    
+
 class LeaveCaveRoom(MapTile):
     def intro_text(self):
         return """
@@ -77,11 +77,57 @@ class LeaveCaveRoom(MapTile):
 
     def modify_player(self, player):
         player.victory = True
+"""
 
-class EmptyCavePath(MapTile):
+GENERIC ROOMS
+
+"""
+class EmptyCavePath_0(MapTile):
+    def intro_text(self):
+        return """
+        The cave walls are damp and you hear a steady drip of water
+        from the stalactites above.
+        """
+
+    def modify_player(self, the_player):
+        #Room has no action on player
+        pass
+class EmptyCavePath_1(MapTile):
     def intro_text(self):
         return """
         Another unremarkable part of the cave. You must forge onwards.
+        """
+
+    def modify_player(self, the_player):
+        #Room has no action on player
+        pass
+class EmptyCavePath_2(MapTile):
+    def intro_text(self):
+        return """
+        The bones of previous explorers crunch and crack under your feet.
+        """
+
+    def modify_player(self, the_player):
+        #Room has no action on player
+        pass
+
+class Stalagmites(MapTile):
+    def intro_text(self):
+        return """
+        A dense cluster of stalagmites lay ahead of you, there's just enough
+        room to squeeze through.
+        """
+
+    def modify_player(self, the_player):
+        #Room has no action on player
+        pass
+
+class CoffinRoom(MapTile):
+    def intro_text(self):
+        return """
+        A row of beat up coffins fill the room. Whatever was in
+        them before was picked through long ago. There is a passage
+        on the far side of the room.
         """
 
     def modify_player(self, the_player):
