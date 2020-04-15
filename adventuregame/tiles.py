@@ -393,3 +393,21 @@ class ShopRoom(MapTile):
         if (len(self.inventory) > 0):
             moves.append(actions.Buy(inventory=self.inventory))
         return moves
+
+class HermitRoom(ShopRoom):
+    def __init__(self, x, y):
+        super().__init__(x, y, [items.Key()])
+        self.inventory[0].value = 300
+    def intro_text(self):
+        text= """
+        A grizzled hermit rests in the corner.
+        """
+        if (len(self.inventory) > 0):
+            text += """
+        He tells you he has something that may help you
+            """
+        else:
+            text += """
+        He has nothing left to help you
+            """
+        return text
