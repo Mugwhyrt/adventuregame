@@ -47,15 +47,36 @@ class MapTile:
 
 class StartingRoom(MapTile):
     def intro_text(self):
-        return """
-        You find yourself in a cave with a flickering torch on the wall.
-        You can make out four paths, each equally as dark and foreboding.
+        text = """
+        For days you have been travelling through the mountains, trying
+        to find some passage to the otherside. All your equipment and
+        food was lost trying to ford a river. All you have to defend
+        yourself now is a rock, and you have no food to eat.
+
+        Today however it seems that luck is with you, as you've
+        finally found a passage leading into the side of the mountain.
+        There are many miles to go should you try to travel around the
+        mountains, you have no choice but to take your chances in the
+        dark caverns.
         """
+        return text
 
     def modify_player(self, the_player):
         #Room has no action on player
         pass
+    
+class LeaveCaveRoom(MapTile):
+    def intro_text(self):
+        return """
+        You see a bright light in the distance...
+        ... it grows as you get closer! It's sunlight!
 
+
+        You have reached the other side of the mountains!
+        """
+
+    def modify_player(self, player):
+        player.victory = True
 
 class EmptyCavePath(MapTile):
     def intro_text(self):
@@ -159,17 +180,3 @@ class SnakePitRoom(MapTile):
 
     def modify_player(self, player):
         player.hp = 0
-
-
-class LeaveCaveRoom(MapTile):
-    def intro_text(self):
-        return """
-        You see a bright light in the distance...
-        ... it grows as you get closer! It's sunlight!
-
-
-        Victory is yours!
-        """
-
-    def modify_player(self, player):
-        player.victory = True
