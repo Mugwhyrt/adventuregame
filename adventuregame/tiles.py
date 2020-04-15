@@ -411,3 +411,52 @@ class HermitRoom(ShopRoom):
         He has nothing left to help you
             """
         return text
+
+"""
+LockedDoor
+
+directions is an array containing chars indicating which directions
+a player can move in while door is locked
+"""
+class LockedDoor(MapTile):
+    def __init__(self, x, y, directions):
+        self.locked = True
+        self.directions = directions
+        super().__init__(x, y)
+        
+    def modify_player(self, the_player):
+        for i in range(len(the_player.inventory)):
+            if type(the_player.inventory[i]).__name__ == "Key":
+                del the_player.inventory[i]
+                self.locked = False
+                print("""
+        You use a key to unlock the door
+                """)
+        if self.locked:
+            print("""
+        You have no key to unlock the door
+            """)
+    def adjacent_moves(self):
+        """Returns all move actions for adjacent tiles."""
+        moves = []
+        if world.tile_exists(self.x + 1, self.y) and ('e' in self.directions or not self.locked):
+            moves.append(actions.MoveEast())
+        if world.tile_exists(self.x - 1, self.y) and ('w' in self.directions or not self.locked):
+            moves.append(actions.MoveWest())
+        if world.tile_exists(self.x, self.y - 1) and ('n' in self.directions or not self.locked):
+            moves.append(actions.MoveNorth())
+        if world.tile_exists(self.x, self.y + 1) and ('s' in self.directions or not self.locked):
+            moves.append(actions.MoveSouth())
+        return moves
+    def intro_text(self):
+        text ="""
+        You are able to pass through the unlocked door.
+        """
+        if self.locked:
+            text ="""
+        A locked door blocks your way.
+            """
+            
+        return text
+
+
