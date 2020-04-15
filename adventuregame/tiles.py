@@ -289,6 +289,19 @@ class EnemyRoom(MapTile):
             moves.append(actions.Heal())
             return moves
 
+class ShadowRoom(EnemyRoom):
+    def __init__(self, x, y):
+        self.firstEncounter = True
+        super().__init__(x, y, enemies.Shadow())
+        
+    def intro_text(self):
+        return """
+        Strange shadows flicker on the wall from a lone torch.
+        Before long you realize these are no ordinary shadows,
+        they begin to attack!
+
+        Good luck trying to hit a shadow!
+        """
 
 class GiantSpiderRoom(EnemyRoom):
     def __init__(self, x, y):
@@ -304,7 +317,35 @@ class GiantSpiderRoom(EnemyRoom):
             The corpse of a dead spider rots on the ground.
             """
 
+class BatRoom(EnemyRoom):
+    def __init__(self, x, y):
+        super().__init__(x, y, enemies.Bats())
 
+    def intro_text(self):
+        if self.enemy.is_alive():
+            return """
+        A swarm of bats swoop down from the ceiling!
+            """
+        else:
+            return """
+        The corpses of adorable bats litter the floor.
+            """
+
+class WitchRoom(EnemyRoom):
+    def __init__(self, x, y):
+        super().__init__(x, y, enemies.Witch())
+
+    def intro_text(self):
+        if self.enemy.is_alive():
+            return """
+        You've stumbled onto the lair of a wicked witch.
+        She doesn't seem too happy to see you
+            """
+        else:
+            return """
+        The witch lays dead in the corner.
+            """
+        
 class OgreRoom(EnemyRoom):
     def __init__(self, x, y):
         super().__init__(x, y, enemies.Ogre())
@@ -312,13 +353,13 @@ class OgreRoom(EnemyRoom):
     def intro_text(self):
         if self.enemy.is_alive():
             return """
-            An ogre is blocking your path!
+        An ogre is blocking your path!
             """
         else:
             return """
-            A dead ogre reminds you of your triumph.
+        A dead ogre reminds you of your triumph. The smell reminds
+        you of the time you fell in a latrine.
             """
-
 
 class SnakePitRoom(MapTile):
     def intro_text(self):
