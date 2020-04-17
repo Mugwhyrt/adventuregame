@@ -45,6 +45,22 @@ class Sword(Weapon):
                          value=15,
                          damage=15)
 
+class Healing(Item):
+    def __init__(self, name, description, value, amt):
+        self.amt = amt
+        super().__init__(name, description, value)
+
+    def __str__(self):
+        return "{}\n=====\n{}\nValue: {}\nHeals: {} hp".format(self.name, self.description, self.value, self.amt)
+
+
+class Hardtack(Healing):
+    def __init__(self):
+        super().__init__(name="Hardtack",
+                        description="A rock hard piece of hardtack, don't chip a tooth!",
+                        value=0,
+                        amt=5)
+        
 class Gold(Item):
     def __init__(self, amt):
         self.amt = amt
