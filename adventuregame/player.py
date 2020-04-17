@@ -24,7 +24,8 @@ class Player():
     def print_inventory(self):
         for item in self.inventory:
             print(item, '\n')
-    
+        print("Gold: " + str(self.gold) + " HP: " + str(self.hp) + "/" + str(self.maxhp) + "\n")
+        
     def move(self, dx, dy):
         self.location_x += dx
         self.location_y += dy
