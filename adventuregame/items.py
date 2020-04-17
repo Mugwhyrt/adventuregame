@@ -60,6 +60,12 @@ class Hardtack(Healing):
                         description="A rock hard piece of hardtack, don't chip a tooth!",
                         value=0,
                         amt=5)
+
+class Key(Item):
+    def __init__(self):
+        super().__init__(name="Key",
+                         description="A small rusted key",
+                         value=5)
         
 class Gold(Item):
     def __init__(self, amt):
