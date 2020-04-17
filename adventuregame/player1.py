@@ -25,7 +25,7 @@ class Player():
         for item in self.inventory:
             print(item, '\n')
         print("Gold: " + str(self.gold) + " HP: " + str(self.hp) + "/" + str(self.maxhp) + "\n")
-        
+
     def move(self, dx, dy):
         self.location_x += dx
         self.location_y += dy
@@ -64,7 +64,7 @@ class Player():
         available_moves = tile.adjacent_moves()
         r = random.randint(0, len(available_moves) - 1)
         self.do_action(available_moves[r])
-
+    
     def add_loot(self, item, text):
         print(text)
         item.available = False
@@ -127,4 +127,6 @@ class Player():
                     waiting = False
         else:
             print("You're already at full health!")
+
+    
 
