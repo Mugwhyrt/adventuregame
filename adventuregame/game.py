@@ -37,4 +37,13 @@ def play():
 
 
 if __name__ == "__main__":
-    play()
+    try:
+        play()
+    except BaseException:
+        import sys
+        print(sys.exc_info()[0])
+        import traceback
+        print(traceback.format_exc())
+    finally:
+        print("Press Enter to continue ...")
+        input()
