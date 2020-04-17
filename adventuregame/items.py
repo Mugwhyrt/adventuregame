@@ -38,6 +38,12 @@ class Dagger(Weapon):
                          value=10,
                          damage=10)
 
+class Sword(Weapon):
+    def __init__(self):
+        super().__init__(name="Sword",
+                         description="A dulled iron sword. Somewhat more dangerous than a dagger and much more dangerous than a rock!",
+                         value=15,
+                         damage=15)
 
 class Gold(Item):
     def __init__(self, amt):
