@@ -36,7 +36,6 @@ def play():
     if not player.is_alive():
         print("You have died!")
 
-
 if __name__ == "__main__":
     try:
         play()
