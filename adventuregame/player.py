@@ -12,6 +12,7 @@ class Player():
         self.gold = 15
         self.location_x, self.location_y = world.starting_position
         self.victory = False
+        self.worldMap = []
 
     def is_alive(self):
         return self.hp > 0
@@ -25,6 +26,16 @@ class Player():
         for item in self.inventory:
             print(item, '\n')
         print("Gold: " + str(self.gold) + " HP: " + str(self.hp) + "/" + str(self.maxhp) + "\n")
+        self.printMap()
+        
+    def printMap(self):
+        for row in self.worldMap:
+            for col in row:
+                print(col, end="")
+            print()
+                
+    def updateMap(self, room):
+        self.worldMap[self.location_y][self.location_x] = '[ ]'
         
     def move(self, dx, dy):
         self.location_x += dx
