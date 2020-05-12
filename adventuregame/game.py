@@ -1,7 +1,12 @@
 """
+Text Based Adventure Game
+Adapted from a tutorial by Phillip Johnson
+
+Original Description from Phillip Johnson:
 A simple text adventure designed as a learning experience for new programmers.
-"""
 __author__ = 'Phillip Johnson'
+"""
+
 import world, os
 from player import Player
 import colorama
