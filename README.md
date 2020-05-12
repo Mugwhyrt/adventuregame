@@ -18,6 +18,8 @@ This iteration comprises changes to the game made as part of a birthday gift. It
 * changes to aid in compilation via pyinstaller
 * a new map
 
+The new map is based on a [One Page Dungeon](https://www.sageadvice.eu/2016/03/22/need-an-adventure-one-page-dungeon/) submission by Redrobes titled [Three Witches and A Hermit](https://campaignwiki.org/1pdc/2010/ ).
+
 ## Iteration 1
 
 This is the current iteration. The goal of this iteration is to implement deeper changes to the UI and mechanics such as ability to display a map showing a player the rooms they've visited, and a natural language based UI (as in, user types "go north" to move to the northern tile).
