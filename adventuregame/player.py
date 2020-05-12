@@ -29,9 +29,12 @@ class Player():
         self.printMap()
         
     def printMap(self):
-        for row in self.worldMap:
-            for col in row:
-                print(col, end="")
+        for row in range(len(self.worldMap)):
+            for col in range(len(self.worldMap[0])):
+                if(row == self.location_y and col == self.location_x):
+                    print("[P]", end="")
+                else:
+                    print(self.worldMap[row][col], end="")
             print()
                 
     def updateMap(self, room):
