@@ -19,7 +19,7 @@ def play():
     player = Player()
     # initialize an empty world map to the scale returned from loading
     # the world tiles
-    player.worldMap = [[' X ' for y in range(scale[1])] for x in range(scale[0])]
+    player.worldMap = [[' X ' for x in range(scale[0])] for y in range(scale[1])]
     room = world.tile_exists(player.location_x, player.location_y)
     player.updateMap(room)
     print(Fore.WHITE, end  = '\r')
