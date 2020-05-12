@@ -17,11 +17,16 @@ def play():
     colorama.init()
     scale = world.load_tiles()
     player = Player()
+    # initialize an empty world map to the scale returned from loading
+    # the world tiles
+    player.worldMap = [[' X ' for y in range(scale[1])] for x in range(scale[0])]
     room = world.tile_exists(player.location_x, player.location_y)
+    player.updateMap(room)
     print(Fore.WHITE, end  = '\r')
     print(room.intro_text())
     while player.is_alive() and not player.victory:
         room = world.tile_exists(player.location_x, player.location_y)
+        player.updateMap(room)
         room.modify_player(player)
         # Check again since the room could have changed the player's state
         if player.is_alive() and not player.victory:
