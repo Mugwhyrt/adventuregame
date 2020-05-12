@@ -28,5 +28,6 @@ def load_tiles():
                 global starting_position
                 starting_position = (x, y)
             _world[(x, y)] = None if tile_name == '' else getattr(tiles, tile_name)(x, y)
+    return [x_max, len(rows)] 
 
 

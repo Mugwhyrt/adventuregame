@@ -15,7 +15,7 @@ from colorama import Fore, Back
 
 def play():
     colorama.init()
-    world.load_tiles()
+    scale = world.load_tiles()
     player = Player()
     room = world.tile_exists(player.location_x, player.location_y)
     print(Fore.WHITE, end  = '\r')
