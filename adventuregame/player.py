@@ -1,5 +1,5 @@
 import random
-import items, world
+import items, world, tiles
 
 __author__ = 'Phillip Johnson'
 
@@ -38,7 +38,14 @@ class Player():
             print()
                 
     def updateMap(self, room):
-        self.worldMap[self.location_y][self.location_x] = '[ ]'
+        tileString = '[ ]'
+        if ( isinstance(room, tiles.EnemyRoom) and room.enemy.is_alive()):
+            tileString = '[E]'
+        elif( isinstance(room, tiles.ShopRoom) ):
+            tileString = '[S]'
+        elif( isinstance(room, tiles.LockedDoor) and room.locked):
+            tileString = '[L]'
+        self.worldMap[self.location_y][self.location_x] = tileString
         
     def move(self, dx, dy):
         self.location_x += dx
