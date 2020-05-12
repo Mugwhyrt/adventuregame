@@ -16,6 +16,7 @@ This iteration comprises changes to the game made as part of a birthday gift. It
 * bug fixes (left in as additional challenge by Phillip Johnson)
 * colored font
 * changes to aid in compilation via pyinstaller
+* a new map
 
 ## Iteration 1
 
