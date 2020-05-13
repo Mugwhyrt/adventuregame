@@ -39,16 +39,54 @@ prepositions = {"with" : ["with", "using"],
                 "in" : ["in", "among", "amongst", "within", "inside",
                         "amidst", "around"]}
 # Articles Array
-articles = ["the", "a", "an", "ye", "thee"]
+articles = ["the", "a", "an", "ye", "thee", "yon"]
 
 # Parser Method
 # Receives user input (String) and lists of available actions and nouns
 # Returns
 
-def parser():
+def parser(userInput, actions, nouns):
     # Word Table contains keys to inform the game
     # which action should be taken
     wordTable = ["verb", "direct object", "preposition", "indirect object"]
+
+    # set string to lowercase and split by white space
+    parsedString = userInput.lower().split()
+    
+    # search for and remove any articles
+    i = 0
+    while i < len(parsedString):
+        if parsedString[i] in articles:
+            parsedString.pop(i)
+        i += 1
+    for i in range(len(parsedString)):
+        word = parsedString[i]
+        # check for verbs
+        for v in verbs:
+            if v in actions and word in verbs[v]:
+                wordTable[0] = v
+                continue
+        # check for prepositions and indirect objects
+        for p in prepositions:
+            if word in prepositions[p] and i+1 < len(parsedString) and parsedString[i+1] in nouns:
+                wordTable[2] = p
+                wordTable[3] = parsedString[i+1]
+                continue
+        # check for direct objects
+        if word in nouns and word != wordTable[3]:
+            wordTable[1] = word
+            continue
+        
     return wordTable
 
-
+if __name__ == "__main__":
+    actions = ["attack"]
+    nouns = ["sword", "ogre", "enemy"]
+    testStrings = ["attack ogre with the sword", "with sword attack that ogre",
+                   "attack witch with sword", "with bow attack witch",
+                   "with bow attack ye enemy" ]
+    for s in testStrings:
+        unparsedString = s
+        print("testing: " + unparsedString)
+        print(parser(unparsedString, actions, nouns))
+    
