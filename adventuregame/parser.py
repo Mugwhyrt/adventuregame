@@ -16,7 +16,7 @@ import actions
 
 # Verb Dictionary
 # dictionary for each action verb with a list of synonyms
-verbs = {"go" : ["go", "head", "move", "walk", "run", "travel", "leave",
+verbs_dict = {"go" : ["go", "head", "move", "walk", "run", "travel", "leave",
                  "pass", "journey",  "depart", "advance", "exit"],
          "attack" : ["attack", "kill", "assault", "beat", "hit", "hurt",
                      "bash", "assail", "harm", "strike", "stab", "whop",
@@ -36,32 +36,39 @@ verbs = {"go" : ["go", "head", "move", "walk", "run", "travel", "leave",
                   "dine", "bite", "chew", "snack", "sup", "wolf",
                   "feast", "gulp", "slup", "guzzle", "quaff", "gargle"],
          "heal" : ["heal"]}
+
 # Preposition Dictionary
-prepositions = {"with" : ["with", "using"],
+prepositions_dict = {"with" : ["with", "using"],
                 "under" : ["under", "below", "beneath"],
                 "above" : ["above", "over"],
                 "in" : ["in", "among", "amongst", "within", "inside",
                         "amidst", "around"]}
 # Articles Array
-articles = ["the", "a", "an", "ye", "thee", "yon"]
+articles_dict = ["the", "a", "an", "ye", "thee", "yon"]
 
 # Word Table
-actionTable = {["verb", "direct object", "preposition", "indirect object"] : None,
-             ["go", "north", "preposition", "indirect object"] : actions.MoveNorth,
-               ["go", "east", "preposition", "indirect object"] : actions.MoveEast,
-               ["go", "west", "preposition", "indirect object"] : actions.MoveWest,
-               ["look", "inventory", "preposition", "indirect object"] : actions.ViewInventory,
-               ["heal", "direct object", "preposition", "indirect object"] : actions.Heal,
-               ["search", "direct object", "preposition", "indirect object"] : actions.Search}
+# {"action sentence" : }
+actionTable = {"baseTable" : [["verb", "direct object", "preposition", "indirect object"], None],
+             "go north" : [["go", "north", "preposition", "indirect object"], actions.MoveNorth],
+               "go east" : [["go", "east", "preposition", "indirect object"], actions.MoveEast],
+               "go west" : [["go", "west", "preposition", "indirect object"], actions.MoveWest],
+               "look inventory" : [["look", "inventory", "preposition", "indirect object"], actions.ViewInventory],
+               "heal self" : [["heal", "self", "preposition", "indirect object"], actions.Heal],
+               "search target" : [["search", "target", "preposition", "indirect object"], actions.Search],
+               "flee enemy" : [["flee", "enemy", "preposition", "indirect object"],actions.Flee],
+               "attack enemy" : [["attack", "enemy", "preposition", "indirect object"],actions.Attack]}
 
 # Parser Method
 # Receives user input (String) and lists of available actions and nouns
-# Returns
+# Returns wordTable, [string, string, string, string], an array corresponding
+#   to the ["verb", "direct object", "preposition", "indirect object"] for some action
+#
+# Parse is meant for 
 
-def parser(userInput, actions, nouns):
+def parser(userInput, verbs, nouns, prepositions):
     # Word Table contains keys to inform the game
     # which action should be taken
-    worldTable = ["verb", "direct object", "preposition", "indirect object"]
+    wordTable = actionTable["baseTable"][0]
     # set string to lowercase and split by white space
     parsedString = userInput.lower().split()
     
@@ -75,7 +82,8 @@ def parser(userInput, actions, nouns):
         word = parsedString[i]
         # check for verbs
         for v in verbs:
-            if v in actions and word in verbs[v]:
+            # if v is an 
+            if v in verbs_dict and word in verbs[v]:
                 wordTable[0] = v
                 continue
         # check for prepositions and indirect objects
@@ -91,14 +99,34 @@ def parser(userInput, actions, nouns):
         
     return wordTable
 
+# Translator Method
+# Receives user input (string) and list of arbitrary nouns with their acceptable substitute
+# Ex: if acceptableNouns = ["witch", "ogre"] then "attack witch" would become "attack enemy"
+# Returns a string with the subbed words
+#
+# Translator is for instances where there are context specific nouns that are equivalent to some
+# existing term in a wordTable from actionTable. Translator simply substitute words, it does
+# not return
+
+
 if __name__ == "__main__":
-    actions = ["attack"]
-    nouns = ["sword", "ogre", "enemy"]
+    
+    # Translate Strings Params
+    #verbs_t
+    # Parse String Params
+    verbs_p = ["attack"]
+    nouns_p = ["enemy"]
+    prepositions_p = []
+
+    # Test Strings
     testStrings = ["attack ogre with the sword", "with sword attack that ogre",
                    "attack witch with sword", "with bow attack witch",
                    "with bow attack ye enemy" ]
     for s in testStrings:
         unparsedString = s
         print("testing: " + unparsedString)
-        print(parser(unparsedString, actions, nouns))
+        # Translate String
+        #print(translater(untranslatedString, verbs_t, nouns_t, 
+        # Parse String
+        print(parser(unparsedString, verbs_p, nouns_p, prepositions_p))
     

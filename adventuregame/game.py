@@ -31,16 +31,22 @@ def play():
         # Check again since the room could have changed the player's state
         if player.is_alive() and not player.victory:
             print(Fore.RED + Back.WHITE + "Choose an action")
+            # room.available_actions() is {word table key : action()}
             available_actions = room.available_actions()
             print(Fore.GREEN + Back.BLACK, end = '\r')
             for action in available_actions:
                 print(action)
             print(Fore.RED, end = '\r')
-            action_input = input('Action: ')
+            # get user input
+            user_input = input('Action: ')
+            # parse user input
+            # action_input = 
             print(Fore.WHITE, end  = '\r')
             os.system("cls")
             for action in available_actions:
+                # if action_input == action.key
                 if action_input == action.hotkey:
+                    # player.do_action(action.action)
                     player.do_action(action, **action.kwargs)
                     break
     if not player.is_alive():

@@ -27,7 +27,7 @@ class MapTile:
         """Returns all move actions for adjacent tiles."""
         moves = []
         if world.tile_exists(self.x + 1, self.y):
-            # moves.append( { key : action}
+            # moves.append( { key : action} )
             # moves.append( { parser.worldTable[moveNorth]() : action } )
             moves.append(actions.MoveEast())
         if world.tile_exists(self.x - 1, self.y):
