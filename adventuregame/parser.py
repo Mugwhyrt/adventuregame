@@ -36,6 +36,14 @@ verbs_dict = {"go" : ["go", "head", "move", "walk", "run", "travel", "leave",
                   "dine", "bite", "chew", "snack", "sup", "wolf",
                   "feast", "gulp", "slup", "guzzle", "quaff", "gargle"],
          "heal" : ["heal"]}
+# Noun Dictionary
+# dictionary for each noun for some action
+nouns_dict = {"north" : ["north"],
+              "south" : ["south"],
+              "east" : ["east"],
+              "west" : ["west"],
+              "target" : ["target"],
+              "enemy" : ["enemy", "foe", "villain", "monster"]}
 
 # Preposition Dictionary
 prepositions_dict = {"with" : ["with", "using"],
@@ -53,7 +61,7 @@ actionTable = {"baseTable" : [["verb", "direct object", "preposition", "indirect
                "go east" : [["go", "east", "preposition", "indirect object"], actions.MoveEast],
                "go west" : [["go", "west", "preposition", "indirect object"], actions.MoveWest],
                "look inventory" : [["look", "inventory", "preposition", "indirect object"], actions.ViewInventory],
-               "heal self" : [["heal", "self", "preposition", "indirect object"], actions.Heal],
+               "heal self" : [["heal", "direct object", "preposition", "indirect object"], actions.Heal],
                "search target" : [["search", "target", "preposition", "indirect object"], actions.Search],
                "flee enemy" : [["flee", "enemy", "preposition", "indirect object"],actions.Flee],
                "attack enemy" : [["attack", "enemy", "preposition", "indirect object"],actions.Attack]}
@@ -65,7 +73,7 @@ actionTable = {"baseTable" : [["verb", "direct object", "preposition", "indirect
 #
 # Parse is meant for 
 
-def parser(userInput, verbs, nouns, prepositions):
+def parser(userInput, actions, nouns):
     # Word Table contains keys to inform the game
     # which action should be taken
     wordTable = actionTable["baseTable"][0]
@@ -78,20 +86,28 @@ def parser(userInput, verbs, nouns, prepositions):
         if parsedString[i] in articles:
             parsedString.pop(i)
         i += 1
+        
+    # for each word in the string
     for i in range(len(parsedString)):
         word = parsedString[i]
-        # check for verbs
+        # for each key in verbs
         for v in verbs:
-            # if v is an 
-            if v in verbs_dict and word in verbs[v]:
+            # if key is in available actions
+            # and word is in acceptable verbs
+            if v in actions and word in verbs[v]:
                 wordTable[0] = v
                 continue
+        
+        """
+        No actions require prepositions just yet
+        So commenting out to simplify coding process
         # check for prepositions and indirect objects
         for p in prepositions:
             if word in prepositions[p] and i+1 < len(parsedString) and parsedString[i+1] in nouns:
                 wordTable[2] = p
                 wordTable[3] = parsedString[i+1]
                 continue
+                """
         # check for direct objects
         if word in nouns and word != wordTable[3]:
             wordTable[1] = word
@@ -116,7 +132,6 @@ if __name__ == "__main__":
     # Parse String Params
     verbs_p = ["attack"]
     nouns_p = ["enemy"]
-    prepositions_p = []
 
     # Test Strings
     testStrings = ["attack ogre with the sword", "with sword attack that ogre",
@@ -128,5 +143,5 @@ if __name__ == "__main__":
         # Translate String
         #print(translater(untranslatedString, verbs_t, nouns_t, 
         # Parse String
-        print(parser(unparsedString, verbs_p, nouns_p, prepositions_p))
+        print(parser(unparsedString, verbs_p, nouns_p))
     
