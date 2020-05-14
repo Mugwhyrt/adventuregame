@@ -34,7 +34,8 @@ verbs = {"go" : ["go", "head", "move", "walk", "run", "travel", "leave",
                    "disappear", "vamoose", "skedaddle", "scram"],
          "eat" : ["eat", "drink", "consume", "devour", "swallow",
                   "dine", "bite", "chew", "snack", "sup", "wolf",
-                  "feast", "gulp", "slup", "guzzle", "quaff", "gargle"]}
+                  "feast", "gulp", "slup", "guzzle", "quaff", "gargle"],
+         "heal" : ["heal"]}
 # Preposition Dictionary
 prepositions = {"with" : ["with", "using"],
                 "under" : ["under", "below", "beneath"],
@@ -46,10 +47,12 @@ articles = ["the", "a", "an", "ye", "thee", "yon"]
 
 # Word Table
 actionTable = {["verb", "direct object", "preposition", "indirect object"] : None,
-             ["go", "north", "preposition", "indirect object"] : actions.MoveNorth(),
-               ["go", "east", "preposition", "indirect object"] : actions.MoveEast(),
-               ["go", "west", "preposition", "indirect object"] : actions.MoveWest(),
-               ["go", "south", "preposition", "indirect object"] : actions.MoveSouth(),}
+             ["go", "north", "preposition", "indirect object"] : actions.MoveNorth,
+               ["go", "east", "preposition", "indirect object"] : actions.MoveEast,
+               ["go", "west", "preposition", "indirect object"] : actions.MoveWest,
+               ["look", "inventory", "preposition", "indirect object"] : actions.ViewInventory,
+               ["heal", "direct object", "preposition", "indirect object"] : actions.Heal,
+               ["search", "direct object", "preposition", "indirect object"] : actions.Search}
 
 # Parser Method
 # Receives user input (String) and lists of available actions and nouns
