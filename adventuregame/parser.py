@@ -11,8 +11,11 @@ General approach is inspired by a talk by Evan Wright for KansasFest 2017
 """
 __author__ = "Zachary Rohman"
 
+import actions
+
 
 # Verb Dictionary
+# dictionary for each action verb with a list of synonyms
 verbs = {"go" : ["go", "head", "move", "walk", "run", "travel", "leave",
                  "pass", "journey",  "depart", "advance", "exit"],
          "attack" : ["attack", "kill", "assault", "beat", "hit", "hurt",
@@ -41,6 +44,13 @@ prepositions = {"with" : ["with", "using"],
 # Articles Array
 articles = ["the", "a", "an", "ye", "thee", "yon"]
 
+# Word Table
+actionTable = {["verb", "direct object", "preposition", "indirect object"] : None,
+             ["go", "north", "preposition", "indirect object"] : actions.MoveNorth(),
+               ["go", "east", "preposition", "indirect object"] : actions.MoveEast(),
+               ["go", "west", "preposition", "indirect object"] : actions.MoveWest(),
+               ["go", "south", "preposition", "indirect object"] : actions.MoveSouth(),}
+
 # Parser Method
 # Receives user input (String) and lists of available actions and nouns
 # Returns
@@ -48,8 +58,7 @@ articles = ["the", "a", "an", "ye", "thee", "yon"]
 def parser(userInput, actions, nouns):
     # Word Table contains keys to inform the game
     # which action should be taken
-    wordTable = ["verb", "direct object", "preposition", "indirect object"]
-
+    worldTable = ["verb", "direct object", "preposition", "indirect object"]
     # set string to lowercase and split by white space
     parsedString = userInput.lower().split()
     
