@@ -60,6 +60,7 @@ actionTable = {"baseTable" : [["verb", "direct object", "preposition", "indirect
              "go north" : [["go", "north", "preposition", "indirect object"], actions.MoveNorth],
                "go east" : [["go", "east", "preposition", "indirect object"], actions.MoveEast],
                "go west" : [["go", "west", "preposition", "indirect object"], actions.MoveWest],
+               "go south" : [["go", "south", "preposition", "indirect object"], actions.MoveSouth],
                "look inventory" : [["look", "inventory", "preposition", "indirect object"], actions.ViewInventory],
                "heal" : [["heal", "direct object", "preposition", "indirect object"], actions.Heal],
                "search target" : [["search", "target", "preposition", "indirect object"], actions.Search],
