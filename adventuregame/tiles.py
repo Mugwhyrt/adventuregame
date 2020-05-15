@@ -27,26 +27,29 @@ class MapTile:
         moves = {}
         if world.tile_exists(self.x + 1, self.y):
             # moves.append( { key : action} )
-            moves[grammar.actionTable["go east"][0]] = grammar.actionTable["go east"][1]()  
+            moves["go east"] = grammar.actionTable["go east"].copy()
             #moves.append(actions.MoveEast())
         if world.tile_exists(self.x - 1, self.y):
             #moves.append(actions.MoveWest())
-            moves[grammar.actionTable["go west"][0]] = grammar.actionTable["go west"][1]()  
+            moves["go west"] = grammar.actionTable["go west"].copy()  
         if world.tile_exists(self.x, self.y - 1):
             #moves.append(actions.MoveNorth())
-            moves[grammar.actionTable["go north"][0]] = grammar.actionTable["go north"][1]()  
+            moves["go north"] = grammar.actionTable["go north"].copy()  
         if world.tile_exists(self.x, self.y + 1):
             #moves.append(actions.MoveSouth())
-            moves[grammar.actionTable["go south"][0]] = grammar.actionTable["go south"][1]()
+            moves["go south"] = grammar.actionTable["go south"].copy()
         return moves
 
     def available_actions(self):
         """Returns all of the available actions in this room."""
         moves = self.adjacent_moves()
         #moves.append(actions.ViewInventory())
-        moves[grammar.actionTable["look inventory"][0]] = grammar.actionTable["look inventory"][1]()
+        moves["look inventory"] = grammar.actionTable["look inventory"].copy()
         #moves.append(actions.Heal())
-        moves[grammar.actionTable["heal"][0]] = grammar.actionTable["heal"][1]()
+        moves["heal"] = grammar.actionTable["heal"].copy()
+        # actions need their function calls specified
+        for m in moves:
+            moves[m][1] = moves[m][1]()
         return moves
 
 
@@ -157,11 +160,15 @@ class LootRoom(MapTile):
     def available_actions(self):
         moves = self.adjacent_moves()
         #moves.append(actions.ViewInventory())
-        moves[grammar.actionTable["look inventory"][0]] = grammar.actionTable["look inventory"][1]()
+        moves["look inventory"] = grammar.actionTable["look inventory"].copy()
         #moves.append(actions.Heal())
-        moves[grammar.actionTable["heal"][0]] = grammar.actionTable["heal"][1]()
+        moves["heal"] = grammar.actionTable["heal"].copy()
+        # actions need their function calls specified
+        for m in moves:
+            moves[m][1] = moves[m][1]()
         if self.item.available: 
-            moves[grammar.actionTable["search target"][0]] = grammar.actionTable["search target"][1](item = self.item, text = self.itemText)
+            moves["search target"]= grammar.actionTable["search target"].copy()
+            moves["search target"][1] = moves["search target"][1](item = self.item, text = self.itemText)
         return moves
 
 
@@ -290,15 +297,18 @@ class EnemyRoom(MapTile):
     def available_actions(self):
         if self.enemy.is_alive():
             moves = {}
-            moves[grammar.actionTable["flee enemy"][0]] = grammar.actionTable["flee enemy"][1]()  
-            moves[grammar.actionTable["attack enemy"][0]] = grammar.actionTable["attack enemy"][1]()  
+            moves["flee enemy"] = grammar.actionTable["flee enemy"].copy()  
+            moves["attack enemy"] = grammar.actionTable["attack enemy"].copy()  
             #return [actions.Flee(tile=self), actions.Attack(enemy=self.enemy)]
         else:
             moves = self.adjacent_moves()
             #moves.append(actions.ViewInventory())
-            moves[grammar.actionTable["look inventory"][0]] = grammar.actionTable["look inventory"][1]()
+            moves["look inventory"] = grammar.actionTable["look inventory"].copy()
             #moves.append(actions.Heal())
-            moves[grammar.actionTable["heal"][0]] = grammar.actionTable["heal"][1]()
+            moves["heal"] = grammar.actionTable["heal"].copy()
+            # actions need their function calls specified
+        for m in moves:
+            moves[m][1] = moves[m][1]()
         return moves
 
 class ShadowRoom(EnemyRoom):
@@ -401,11 +411,14 @@ class ShopRoom(MapTile):
     def available_actions(self):
         moves = self.adjacent_moves()
         #moves.append(actions.ViewInventory())
-        moves[grammar.actionTable["look inventory"][0]] = grammar.actionTable["look inventory"][1]()
+        moves["look inventory"] = grammar.actionTable["look inventory"].copy()
         #moves.append(actions.Heal())
-        moves[grammar.actionTable["heal"][0]] = grammar.actionTable["heal"][1]()
+        moves["heal"] = grammar.actionTable["heal"].copy()
+        # actions need their function calls specified
         if (len(self.inventory) > 0):
-            moves[grammar.actionTable["buy"][0]] = grammar.actionTable["buy"][1]()
+            moves"buy"] = grammar.actionTable["buy"].copy()
+        for m in moves:
+            moves[m][1] = moves[m][1]()
         return moves
 
 class HermitRoom(ShopRoom):
@@ -455,16 +468,16 @@ class LockedDoor(MapTile):
         moves = {}
         if world.tile_exists(self.x + 1, self.y) and ('e' in self.directions or not self.locked):
             #moves.append(actions.MoveEast())
-            moves[grammar.actionTable["go east"][0]] = grammar.actionTable["go east"][1]()  
+            moves["go east"] = grammar.actionTable["go east"].copy()  
         if world.tile_exists(self.x - 1, self.y) and ('w' in self.directions or not self.locked):
             #moves.append(actions.MoveWest())
-            moves[grammar.actionTable["go west"][0]] = grammar.actionTable["go west"][1]()  
+            moves["go west"] = grammar.actionTable["go west"].copy()  
         if world.tile_exists(self.x, self.y - 1) and ('n' in self.directions or not self.locked):
             #moves.append(actions.MoveNorth())
-            moves[grammar.actionTable["go north"][0]] = grammar.actionTable["go north"][1]()
+            moves["go north"] = grammar.actionTable["go north"].copy() 
         if world.tile_exists(self.x, self.y + 1) and ('s' in self.directions or not self.locked):
             #moves.append(actions.MoveSouth())
-            moves[ grammar.actionTable["go south"][0]] = grammar.actionTable["go south"][1]()
+            moves["go south"] = grammar.actionTable["go south"].copy() 
         return moves
     def intro_text(self):
         text ="""
