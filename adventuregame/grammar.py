@@ -149,7 +149,7 @@ def getActions(tableDictionary):
     actions = []
     for t in tableDictionary:
         if t.split()[0] not in actions:
-            actions.append(t[0])
+            actions.append(t.split()[0])
     return actions
 
 # Get Targets
