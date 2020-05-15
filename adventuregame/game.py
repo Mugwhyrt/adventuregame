@@ -42,7 +42,7 @@ def play():
             # parse user input
             actions = grammar.getActions(available_actions)
             targets = grammar.getTargets(available_actions)
-            action_input = gramar.parser(user_input, actions, targets)
+            action_input = grammar.parser(user_input, actions, targets)
             print(Fore.WHITE, end  = '\r')
             os.system("cls")
             for action in available_actions:
