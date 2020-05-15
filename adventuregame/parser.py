@@ -52,7 +52,7 @@ prepositions_dict = {"with" : ["with", "using"],
                 "in" : ["in", "among", "amongst", "within", "inside",
                         "amidst", "around"]}
 # Articles Array
-articles_dict = ["the", "a", "an", "ye", "thee", "yon"]
+articles = ["the", "a", "an", "ye", "thee", "yon"]
 
 # Word Table
 # {"action sentence" : }
@@ -63,8 +63,8 @@ actionTable = {"baseTable" : [["verb", "direct object", "preposition", "indirect
                "look inventory" : [["look", "inventory", "preposition", "indirect object"], actions.ViewInventory],
                "heal self" : [["heal", "direct object", "preposition", "indirect object"], actions.Heal],
                "search target" : [["search", "target", "preposition", "indirect object"], actions.Search],
-               "flee enemy" : [["flee", "enemy", "preposition", "indirect object"],actions.Flee],
-               "attack enemy" : [["attack", "enemy", "preposition", "indirect object"],actions.Attack]}
+               "attack enemy" : [["attack", "enemy", "preposition", "indirect object"],actions.Attack],
+               "flee enemy" : [["flee", "enemy", "preposition", "indirect object"],actions.Flee]}
 
 # Parser Method
 # Receives user input (String) and lists of available actions and nouns
@@ -76,10 +76,9 @@ actionTable = {"baseTable" : [["verb", "direct object", "preposition", "indirect
 def parser(userInput, actions, nouns):
     # Word Table contains keys to inform the game
     # which action should be taken
-    wordTable = actionTable["baseTable"][0]
+    wordTable = actionTable["baseTable"][0].copy()
     # set string to lowercase and split by white space
     parsedString = userInput.lower().split()
-    
     # search for and remove any articles
     i = 0
     while i < len(parsedString):
@@ -90,58 +89,77 @@ def parser(userInput, actions, nouns):
     # for each word in the string
     for i in range(len(parsedString)):
         word = parsedString[i]
-        # for each key in verbs
-        for v in verbs:
+        # for each key in verbs_dict
+        for v in verbs_dict:
             # if key is in available actions
-            # and word is in acceptable verbs
-            if v in actions and word in verbs[v]:
+            # and word is in verbs_dict
+            if v in actions and word in verbs_dict[v]:
+                print("{} is in actions, and {} is in verbs_dict[{}]".format(v, word, v))
                 wordTable[0] = v
                 continue
         
         """
         No actions require prepositions just yet
         So commenting out to simplify coding process
+        
         # check for prepositions and indirect objects
         for p in prepositions:
+            # if the word is a preposition
+            # and the following word is in the list of acceptable nouns
             if word in prepositions[p] and i+1 < len(parsedString) and parsedString[i+1] in nouns:
                 wordTable[2] = p
                 wordTable[3] = parsedString[i+1]
                 continue
                 """
-        # check for direct objects
-        if word in nouns and word != wordTable[3]:
-            wordTable[1] = word
-            continue
-        
+        # for each key in nouns_dict
+        for n in nouns_dict:
+            # if key is in available nouns
+            # and word is in nouns_dict
+            if n in nouns and word in nouns_dict[n] and word != wordTable[3]:
+                # then it is the direct noun
+                wordTable[1] = word
+                continue
     return wordTable
 
 # Translator Method
 # Receives user input (string) and list of arbitrary nouns with their acceptable substitute
-# Ex: if acceptableNouns = ["witch", "ogre"] then "attack witch" would become "attack enemy"
+# Ex: if wordTranslations = {"enemy" : ["witch", "ogre"]} then "attack witch" would become "attack enemy"
 # Returns a string with the subbed words
 #
 # Translator is for instances where there are context specific nouns that are equivalent to some
-# existing term in a wordTable from actionTable. Translator simply substitute words, it does
-# not return
+# existing term in a wordTable from actionTable. Translator simply substitutes words, it does
+# not return a formatted word table
+
+def translator(userInput, wordTranslations):
+    # for each key in wordTranslations
+    for t in wordTranslations:
+        # for each element in translations array
+        for w in wordTranslations[t]:
+            userInput = userInput.replace(w, t)
+    return userInput
 
 
 if __name__ == "__main__":
     
     # Translate Strings Params
-    #verbs_t
+    words_t = {"enemy" : ["ogre", "witch"]}
     # Parse String Params
-    verbs_p = ["attack"]
-    nouns_p = ["enemy"]
+    verbs_p = ["attack",
+               "go"]
+    nouns_p = ["enemy",
+               "north"]
 
     # Test Strings
     testStrings = ["attack ogre with the sword", "with sword attack that ogre",
                    "attack witch with sword", "with bow attack witch",
-                   "with bow attack ye enemy" ]
+                   "with bow attack ye enemy", "head north"]
     for s in testStrings:
         unparsedString = s
         print("testing: " + unparsedString)
         # Translate String
-        #print(translater(untranslatedString, verbs_t, nouns_t, 
+        unparsedString = translator(unparsedString, words_t)
+        print(unparsedString)
         # Parse String
         print(parser(unparsedString, verbs_p, nouns_p))
+        print("\n===============\n")
     
