@@ -43,13 +43,18 @@ def play():
             actions = grammar.getActions(available_actions)
             targets = grammar.getTargets(available_actions)
             action_input = grammar.parser(user_input, actions, targets)
+            #print("avail_actions: " + str(available_actions))
+            #print("actions: " + str(actions))
+            #print("targets: " + str(targets))
+            #print("Action_Input: " + str(action_input))
             print(Fore.WHITE, end  = '\r')
             os.system("cls")
             for action in available_actions:
                 # if action_input == action.key
-                if action_input == action:
+                if action_input == available_actions[action][0]:
                     # player.do_action(action.action)
-                    player.do_action(available_actions[action], **action.kwargs)
+                    player.do_action(available_actions[action][1],
+                                     **available_actions[action][1].kwargs)
                     break
     if not player.is_alive():
         print("You have died!")
