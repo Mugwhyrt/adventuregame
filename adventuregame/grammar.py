@@ -43,7 +43,8 @@ nouns_dict = {"north" : ["north"],
               "east" : ["east"],
               "west" : ["west"],
               "target" : ["target"],
-              "enemy" : ["enemy", "foe", "villain", "monster"]}
+              "enemy" : ["enemy", "foe", "villain", "monster"],
+              "inventory" : ["inventory", "stuff"]}
 
 # Preposition Dictionary
 prepositions_dict = {"with" : ["with", "using"],
@@ -96,7 +97,6 @@ def parser(userInput, actions, targets):
             # if key is in available actions
             # and word is in verbs_dict
             if v in actions and word in verbs_dict[v]:
-                print("{} is in actions, and {} is in verbs_dict[{}]".format(v, word, v))
                 wordTable[0] = v
                 continue
         
