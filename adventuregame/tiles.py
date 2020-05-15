@@ -297,8 +297,10 @@ class EnemyRoom(MapTile):
     def available_actions(self):
         if self.enemy.is_alive():
             moves = {}
-            moves["flee enemy"] = grammar.actionTable["flee enemy"].copy()  
-            moves["attack enemy"] = grammar.actionTable["attack enemy"].copy()  
+            moves["flee enemy"] = grammar.actionTable["flee enemy"].copy()
+            moves["flee enemy"][1] = moves["flee enemy"][1](tile = self)
+            moves["attack enemy"] = grammar.actionTable["attack enemy"].copy()
+            moves["attack enemy"][1] = moves["attack enemy"][1](enemy = self.enemy)
             #return [actions.Flee(tile=self), actions.Attack(enemy=self.enemy)]
         else:
             moves = self.adjacent_moves()
@@ -307,8 +309,8 @@ class EnemyRoom(MapTile):
             #moves.append(actions.Heal())
             moves["heal"] = grammar.actionTable["heal"].copy()
             # actions need their function calls specified
-        for m in moves:
-            moves[m][1] = moves[m][1]()
+            for m in moves:
+                moves[m][1] = moves[m][1]()
         return moves
 
 class ShadowRoom(EnemyRoom):
