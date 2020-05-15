@@ -31,7 +31,7 @@ def play():
         # Check again since the room could have changed the player's state
         if player.is_alive() and not player.victory:
             print(Fore.RED + Back.WHITE + "Choose an action")
-            # room.available_actions() is {word table key : action()}
+            # room.available_actions() is {sentence key : [table, action()]}
             available_actions = room.available_actions()
             print(Fore.GREEN + Back.BLACK, end = '\r')
             #for action in available_actions:
@@ -40,8 +40,8 @@ def play():
             # get user input
             user_input = input('Action: ')
             # parse user input
-            actions = getActions(available_actions)
-            targets = getTargets(available_actions)
+            actions = grammar.getActions(available_actions)
+            targets = grammar.getTargets(available_actions)
             action_input = gramar.parser(user_input, actions, targets)
             print(Fore.WHITE, end  = '\r')
             os.system("cls")
