@@ -28,7 +28,7 @@ class MapTile:
         moves = []
         if world.tile_exists(self.x + 1, self.y):
             # moves.append( { key : action} )
-            # moves.append( { parser.worldTable[moveNorth]() : action } )
+            # moves.append( { parser.actionTable["go north"][0] : parser.actionTable["go north"][1]() } )
             moves.append(actions.MoveEast())
         if world.tile_exists(self.x - 1, self.y):
             moves.append(actions.MoveWest())
