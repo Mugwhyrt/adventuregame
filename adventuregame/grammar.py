@@ -145,7 +145,7 @@ def translator(userInput, wordTranslations):
 # Get Actions
 # Takes a dictionary of wordTables and returns an array of the unique actions
 # from the word tables
-def getWords(tableDictionary):
+def getActions(tableDictionary):
     actions = []
     for t in tableDictionary.split:
         if t[0] not in actions:
@@ -155,7 +155,7 @@ def getWords(tableDictionary):
 # Get Targets
 # Takes a dictionary of wordTables and returns an array of the unique targets
 # from the word tables
-def getWords(tableDictionary):
+def getTargets(tableDictionary):
     targets = []
     for t in tableDictionary.split:
         if len(tableDictionary) > 1 and t[1] not in targets:
