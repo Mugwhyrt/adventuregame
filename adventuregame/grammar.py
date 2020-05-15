@@ -147,8 +147,8 @@ def translator(userInput, wordTranslations):
 # from the word tables
 def getActions(tableDictionary):
     actions = []
-    for t in tableDictionary.split:
-        if t[0] not in actions:
+    for t in tableDictionary:
+        if t.split()[0] not in actions:
             actions.append(t[0])
     return actions
 
@@ -157,9 +157,9 @@ def getActions(tableDictionary):
 # from the word tables
 def getTargets(tableDictionary):
     targets = []
-    for t in tableDictionary.split:
-        if len(tableDictionary) > 1 and t[1] not in targets:
-            targets.append(t[1])
+    for t in tableDictionary:
+        if len(t.split()) > 1 and t.split()[1] not in targets:
+            targets.append(t.split()[1])
     return targets
 if __name__ == "__main__":
     
