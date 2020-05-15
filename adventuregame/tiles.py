@@ -416,7 +416,7 @@ class ShopRoom(MapTile):
         moves["heal"] = grammar.actionTable["heal"].copy()
         # actions need their function calls specified
         if (len(self.inventory) > 0):
-            moves"buy"] = grammar.actionTable["buy"].copy()
+            moves["buy"] = grammar.actionTable["buy"].copy()
         for m in moves:
             moves[m][1] = moves[m][1]()
         return moves
