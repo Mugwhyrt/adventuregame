@@ -3,7 +3,6 @@ __author__ = 'Phillip Johnson'
 
 import items, enemies, actions, world, grammar
 
-
 class MapTile:
     """The base class for a tile within the world space"""
     def __init__(self, x, y):
@@ -25,25 +24,29 @@ class MapTile:
 
     def adjacent_moves(self):
         """Returns all move actions for adjacent tiles."""
-        moves = []
+        moves = {}
         if world.tile_exists(self.x + 1, self.y):
             # moves.append( { key : action} )
-            # moves.append( { parser.actionTable["go north"][0] : parser.actionTable["go north"][1]() } )
-            moves.append(actions.MoveEast())
+            moves.append(  grammar.actionTable["go east"][0] : grammar.actionTable["go east"][1]()  )
+            #moves.append(actions.MoveEast())
         if world.tile_exists(self.x - 1, self.y):
-            moves.append(actions.MoveWest())
+            #moves.append(actions.MoveWest())
+            moves.append(  grammar.actionTable["go west"][0] : grammar.actionTable["go west"][1]()  )
         if world.tile_exists(self.x, self.y - 1):
-            moves.append(actions.MoveNorth())
+            #moves.append(actions.MoveNorth())
+            moves.append(  grammar.actionTable["go north"][0] : grammar.actionTable["go north"][1]()  )
         if world.tile_exists(self.x, self.y + 1):
-            moves.append(actions.MoveSouth())
+            #moves.append(actions.MoveSouth())
+            moves.append(  grammar.actionTable["go south"][0] : grammar.actionTable["go south"][1]())
         return moves
 
     def available_actions(self):
         """Returns all of the available actions in this room."""
         moves = self.adjacent_moves()
-        moves.append(actions.ViewInventory())
-        moves.append(actions.Heal())
-        
+        #moves.append(actions.ViewInventory())
+        moves.append(  grammar.actionTable["look inventory"][0] : grammar.actionTable["look inventory"][1]()  )
+        #moves.append(actions.Heal())
+        moves.append(  grammar.actionTable["heal"][0] : grammar.actionTable["heal"][1]()  )
         return moves
 
 
@@ -153,10 +156,12 @@ class LootRoom(MapTile):
 
     def available_actions(self):
         moves = self.adjacent_moves()
-        moves.append(actions.ViewInventory())
-        moves.append(actions.Heal())
+        #moves.append(actions.ViewInventory())
+        moves.append(  grammar.actionTable["look inventory"][0] : grammar.actionTable["look inventory"][1]()  )
+        #moves.append(actions.Heal())
+        moves.append(  grammar.actionTable["heal"][0] : grammar.actionTable["heal"][1]()  )
         if self.item.available: 
-            moves.append(actions.Search(item = self.item, text = self.itemText))
+            moves.append(  grammar.actionTable["search target"][0] : grammar.actionTable["search target"][1](item = self.item, text = self.itemText) )
         return moves
 
 
@@ -284,12 +289,17 @@ class EnemyRoom(MapTile):
 
     def available_actions(self):
         if self.enemy.is_alive():
-            return [actions.Flee(tile=self), actions.Attack(enemy=self.enemy)]
+            moves = {}
+            moves.append(  grammar.actionTable["flee enemy"][0] : grammar.actionTable["flee enemy"][1]()  )
+            moves.append(  grammar.actionTable["attack enemy"][0] : grammar.actionTable["attack enemy"][1]()  )
+            #return [actions.Flee(tile=self), actions.Attack(enemy=self.enemy)]
         else:
             moves = self.adjacent_moves()
-            moves.append(actions.ViewInventory())
-            moves.append(actions.Heal())
-            return moves
+            #moves.append(actions.ViewInventory())
+            moves.append(  grammar.actionTable["look inventory"][0] : grammar.actionTable["look inventory"][1]()  )
+            #moves.append(actions.Heal())
+            moves.append(  grammar.actionTable["heal"][0] : grammar.actionTable["heal"][1]()  )
+        return moves
 
 class ShadowRoom(EnemyRoom):
     def __init__(self, x, y):
@@ -390,10 +400,12 @@ class ShopRoom(MapTile):
     
     def available_actions(self):
         moves = self.adjacent_moves()
-        moves.append(actions.ViewInventory())
-        moves.append(actions.Heal())
+        #moves.append(actions.ViewInventory())
+        moves.append(  grammar.actionTable["look inventory"][0] : grammar.actionTable["look inventory"][1]()  )
+        #moves.append(actions.Heal())
+        moves.append(  grammar.actionTable["heal"][0] : grammar.actionTable["heal"][1]()  )
         if (len(self.inventory) > 0):
-            moves.append(actions.Buy(inventory=self.inventory))
+            moves.append(  grammar.actionTable["buy"][0] : grammar.actionTable["buy"][1]()  )
         return moves
 
 class HermitRoom(ShopRoom):
@@ -440,15 +452,19 @@ class LockedDoor(MapTile):
             """)
     def adjacent_moves(self):
         """Returns all move actions for adjacent tiles."""
-        moves = []
+        moves = {}
         if world.tile_exists(self.x + 1, self.y) and ('e' in self.directions or not self.locked):
-            moves.append(actions.MoveEast())
+            #moves.append(actions.MoveEast())
+            moves.append(  grammar.actionTable["go east"][0] : grammar.actionTable["go east"][1]()  )
         if world.tile_exists(self.x - 1, self.y) and ('w' in self.directions or not self.locked):
-            moves.append(actions.MoveWest())
+            #moves.append(actions.MoveWest())
+            moves.append(  grammar.actionTable["go west"][0] : grammar.actionTable["go west"][1]()  )
         if world.tile_exists(self.x, self.y - 1) and ('n' in self.directions or not self.locked):
-            moves.append(actions.MoveNorth())
+            #moves.append(actions.MoveNorth())
+            moves.append(  grammar.actionTable["go north"][0] : grammar.actionTable["go north"][1]()  )
         if world.tile_exists(self.x, self.y + 1) and ('s' in self.directions or not self.locked):
-            moves.append(actions.MoveSouth())
+            #moves.append(actions.MoveSouth())
+            moves.append(  grammar.actionTable["go south"][0] : grammar.actionTable["go south"][1]()  )
         return moves
     def intro_text(self):
         text ="""
