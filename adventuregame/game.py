@@ -7,7 +7,7 @@ A simple text adventure designed as a learning experience for new programmers.
 __author__ = 'Phillip Johnson'
 """
 
-import world, os
+import world, os, grammar
 from player import Player
 import colorama
 from colorama import Fore, Back
@@ -34,20 +34,22 @@ def play():
             # room.available_actions() is {word table key : action()}
             available_actions = room.available_actions()
             print(Fore.GREEN + Back.BLACK, end = '\r')
-            for action in available_actions:
-                print(action)
+            #for action in available_actions:
+            #    print(action)
             print(Fore.RED, end = '\r')
             # get user input
             user_input = input('Action: ')
             # parse user input
-            # action_input = 
+            actions = getActions(available_actions)
+            targets = getTargets(available_actions)
+            action_input = gramar.parser(user_input, actions, targets)
             print(Fore.WHITE, end  = '\r')
             os.system("cls")
             for action in available_actions:
                 # if action_input == action.key
-                if action_input == action.hotkey:
+                if action_input == action:
                     # player.do_action(action.action)
-                    player.do_action(action, **action.kwargs)
+                    player.do_action(available_actions[action], **action.kwargs)
                     break
     if not player.is_alive():
         print("You have died!")
