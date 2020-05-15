@@ -61,10 +61,11 @@ actionTable = {"baseTable" : [["verb", "direct object", "preposition", "indirect
                "go east" : [["go", "east", "preposition", "indirect object"], actions.MoveEast],
                "go west" : [["go", "west", "preposition", "indirect object"], actions.MoveWest],
                "look inventory" : [["look", "inventory", "preposition", "indirect object"], actions.ViewInventory],
-               "heal self" : [["heal", "direct object", "preposition", "indirect object"], actions.Heal],
+               "heal" : [["heal", "direct object", "preposition", "indirect object"], actions.Heal],
                "search target" : [["search", "target", "preposition", "indirect object"], actions.Search],
                "attack enemy" : [["attack", "enemy", "preposition", "indirect object"],actions.Attack],
-               "flee enemy" : [["flee", "enemy", "preposition", "indirect object"],actions.Flee]}
+               "flee enemy" : [["flee", "enemy", "preposition", "indirect object"],actions.Flee],
+               "buy" : [["buy", "direct object", "preposition", "indirect object"], actions.Buy]}
 
 # Parser Method
 # Receives user input (String) and lists of available actions and nouns
@@ -140,6 +141,25 @@ def translator(userInput, wordTranslations):
     return userInput
 
 
+# Get Actions
+# Takes a dictionary of wordTables and returns an array of the unique actions
+# from the word tables
+def getWords(tableDictionary):
+    actions = []
+    for t in tableDictionary:
+        if t[0] not in actions:
+            actions.append(t[0])
+    return actions
+
+# Get Targets
+# Takes a dictionary of wordTables and returns an array of the unique targets
+# from the word tables
+def getWords(tableDictionary):
+    targets = []
+    for t in tableDictionary:
+        if t[1] not in targets:
+            targets.append(t[1])
+    return targets
 if __name__ == "__main__":
     
     # Translate Strings Params
