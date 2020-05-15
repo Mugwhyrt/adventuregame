@@ -1,10 +1,10 @@
 """
-TEXT PARSER
+GRAMMAR
 
-Methods and constants for parsing text. Constants are intended to cover
-non-game specific words such as verbs and prepositions. More game specific
-nouns and the result of a parsed sentence will be handled within the
-context of the game
+Methods and constants for translating and parsing text. Constants are intended
+to cover non-game specific words such as verbs and prepositions. More game
+specific nouns and the result of a parsed sentence will be passed from props
+in the game
 
 General approach is inspired by a talk by Evan Wright for KansasFest 2017
 'Making a Text Adventure Parser' - https://www.youtube.com/watch?v=II3O1CJA-x8
@@ -73,7 +73,7 @@ actionTable = {"baseTable" : [["verb", "direct object", "preposition", "indirect
 #
 # Parse is meant for 
 
-def parser(userInput, actions, nouns):
+def parser(userInput, actions, targets):
     # Word Table contains keys to inform the game
     # which action should be taken
     wordTable = actionTable["baseTable"][0].copy()
@@ -105,17 +105,18 @@ def parser(userInput, actions, nouns):
         # check for prepositions and indirect objects
         for p in prepositions:
             # if the word is a preposition
-            # and the following word is in the list of acceptable nouns
-            if word in prepositions[p] and i+1 < len(parsedString) and parsedString[i+1] in nouns:
+            # and the following word is in the list of acceptable targets
+            if word in prepositions[p] and i+1 < len(parsedString) and parsedString[i+1] in targets:
                 wordTable[2] = p
                 wordTable[3] = parsedString[i+1]
                 continue
                 """
+        
         # for each key in nouns_dict
         for n in nouns_dict:
             # if key is in available nouns
             # and word is in nouns_dict
-            if n in nouns and word in nouns_dict[n] and word != wordTable[3]:
+            if n in targets and word in nouns_dict[n] and word != wordTable[3]:
                 # then it is the direct noun
                 wordTable[1] = word
                 continue
@@ -152,7 +153,7 @@ if __name__ == "__main__":
     # Test Strings
     testStrings = ["attack ogre with the sword", "with sword attack that ogre",
                    "attack witch with sword", "with bow attack witch",
-                   "with bow attack ye enemy", "head north"]
+                   "with bow attack ye enemy", "head north with key", "with sword ogre attack"]
     for s in testStrings:
         unparsedString = s
         print("testing: " + unparsedString)
