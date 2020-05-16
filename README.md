@@ -32,4 +32,8 @@ This is the current iteration. The goal of this iteration is to implement deeper
 
 ### Stage 2
 
-The goal of this iteration is to improve standard RPG mechanics. First by introducing a more in-depth statistical system including attributes such as strength, intelligence, and luck.
+The goal of this iteration is to improve standard RPG mechanics. First by introducing a more in-depth statistical system including attributes such as strength, intelligence, luck, and experience.
+
+### Stage 3
+
+The tentative goal of this stage is to introduce a system to support multiple maps. This should allow for a larger game world with multiple dungeons and landmarks. May also introduce procedural tile generation to aid in map development.
