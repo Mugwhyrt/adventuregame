@@ -4,7 +4,7 @@ Props
 A super class to define general behavior for any object that interacts with
 the player. Props have
 """
-import actions, world
+#import actions, world
 
 class Prop():
     def __init__(self, title, synonyms, actions, description, children):
@@ -53,6 +53,42 @@ class MapTile(Prop):
         self.x = x
         self.y = y
         super().__init__(self, title, synonyms, actions,
-                         description, children, x, y)
+                         description, children)
 
+    def readFromCSV(fileName):
+        tiles = {}
+        with open(fileName, 'r') as f:
+            rows = f.readlines()
+        title = ""
+        synonyms = []
+        actions = []
+        description = ""
+        for r in rows:
+            line = r.split(',')
+            param = line[0]
+            if param == "title":
+                    title = line[1].replace("\n", "")
+            elif param == "synonyms":
+                i = 1
+                while i < len(line):
+                    synonyms.append(line[i].replace("\n", ""))
+                    i += 1
+            elif param == "actions":
+                i = 1
+                while i < len(line):
+                    actions.append(line[i].replace("\n", ""))
+                    i += 1
+            elif param == "description":
+                description = line[1].replace("\n", "")
+                tiles[title] = [synonyms.copy(), actions.copy(), description]
+                synonyms = []
+                actions = []
+        return tiles
+
+if __name__ == "__main__":
+    tileSet = MapTile.readFromCSV("resources/tiles.csv")
+    for key in tileSet:
+        tile = MapTile(key, tileSet[key][0], tileSet[key][1],
+                       tileSet[key][2], [], 0, 1)
+        print(tile)
     
