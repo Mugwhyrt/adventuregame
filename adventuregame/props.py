@@ -33,7 +33,12 @@ class Prop():
         for c in children:
             childTargets[c.title] = c.nouns
         return childTargets
-        
+
+    def readFromCSV(self, fileName):
+        raise NotImplementedError()
+
+    def available_actions(self):
+        raise NotImplementedError()
 
     
 """
@@ -43,4 +48,11 @@ class for map tiles, map tile can contain any kind of prop.
 """
 
 class MapTile(Prop):
-    def __init__(self, nouns, actions, description, children, x, y):
+    def __init__(self, title, synonyms, actions,
+                 description, children, x, y):
+        self.x = x
+        self.y = y
+        super().__init__(self, title, synonyms, actions,
+                         description, children, x, y)
+
+    
