@@ -40,10 +40,14 @@ def play():
             print(Fore.RED, end = '\r')
             # get user input
             user_input = input('Action: ')
+            # translate user input
+            translated_input = grammar.translator(user_input, {},
+                                                  vcb.verbs_dict,
+                                                  vcb.nouns_dict)
             # parse user input
-            actions = grammar.getActions(available_actions)
-            targets = grammar.getTargets(available_actions)
-            action_input = grammar.parser(user_input, actions, targets)
+            actions = grammar.getTableElement(available_actions, 0)
+            targets = grammar.getTableElement(available_actions, 1)
+            action_input = grammar.parser(translated_input, actions, targets)
             #print("avail_actions: " + str(available_actions))
             #print("actions: " + str(actions))
             #print("targets: " + str(targets))

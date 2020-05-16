@@ -84,11 +84,11 @@ def parser(userInput, moves, targets):
 # existing term in a wordTable from actionTable. Translator simply substitutes words, it does
 # not return a formatted word table
 
-def translator(userInput, wordTranslations):
+def translator(userInput, wordTranslations, verbs, nouns):
 
     userInput = stringReplace(userInput, wordTranslations)
-    userInput = stringReplace(userInput, vcb.verbs_dict)
-    userInput = stringReplace(userInput, vcb.nouns_dict)
+    userInput = stringReplace(userInput, verbs)
+    userInput = stringReplace(userInput, nouns)
     
     return userInput
 
@@ -102,27 +102,10 @@ def stringReplace(userInput, keyTable):
             userInput = userInput.replace(s, key)
     return userInput
 
-# Get Actions
-# Takes a dictionary of wordTables and returns an array of the unique actions
-# from the word tables
-def getActions(tableDictionary):
-    actions = []
-    for t in tableDictionary:
-        if t.split()[0] not in actions:
-            actions.append(t.split()[0])
-    return actions
-
-# Get Targets
-# Takes a dictionary of wordTables and returns an array of the unique targets
-# from the word tables
-def getTargets(tableDictionary):
-    targets = []
-    for t in tableDictionary:
-        if len(t.split()) > 1 and t.split()[1] not in targets:
-            targets.append(t.split()[1])
-    return targets
-
-"""
+# Get Table Elements
+# Takes a dictionary of wordTables and returns an array of the unique
+# elements for the specified index corresponding to "verb", "direct object",
+# "preposition", or "indirect object"
 def getTableElement(tableDictionary, index):
     elements = []
     for t in tableDictionary:
@@ -130,7 +113,7 @@ def getTableElement(tableDictionary, index):
         if len(arr) > index and arr[index] not in elements:
             elements.append(arr[index])
     return elements
-"""
+
 if __name__ == "__main__":
     
     # Translate Strings Params
