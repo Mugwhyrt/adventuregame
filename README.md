@@ -11,7 +11,7 @@ Links to Phillip Johnson's original work:
 adventuregame requires the following libraries:
 * [colorama](https://pypi.org/project/colorama/)
 
-## Stage Overiew
+## Development Stage Overiew
 ### Stage 0
 
 This iteration comprises changes to the game made as part of a birthday gift. It includes (but is not necessarily limited to): 
