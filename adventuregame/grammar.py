@@ -31,12 +31,15 @@ actionTable = {"baseTable" : [["verb", "direct object", "preposition", "indirect
 #
 # Parse is meant for 
 
-def parser(userInput, actions, targets):
+def parser(userInput, moves, targets):
+
     # Word Table contains keys to inform the game
     # which action should be taken
     wordTable = actionTable["baseTable"][0].copy()
+
     # set string to lowercase and split by white space
     parsedString = userInput.lower().split()
+
     # search for and remove any articles
     i = 0
     while i < len(parsedString):
@@ -48,13 +51,15 @@ def parser(userInput, actions, targets):
     for i in range(len(parsedString)):
         word = parsedString[i]
         # for each key in verbs_dict
-        for v in vcb.verbs_dict:
-            # if key is in available actions
-            # and word is in verbs_dict
-            if v in actions and word in vcb.verbs_dict[v]:
-                wordTable[0] = v
-                continue
-        
+        if word in moves:
+            wordTable[0] = v
+            continue
+
+        # for each key in nouns_dict
+        if word in targets and word != wordTable[3]:
+            # then it is the direct noun
+            wordTable[1] = word
+            continue
         """
         No actions require prepositions just yet
         So commenting out to simplify coding process
@@ -68,15 +73,6 @@ def parser(userInput, actions, targets):
                 wordTable[3] = parsedString[i+1]
                 continue
                 """
-        
-        # for each key in nouns_dict
-        for n in vcb.nouns_dict:
-            # if key is in available nouns
-            # and word is in nouns_dict
-            if n in targets and word in vcb.nouns_dict[n] and word != wordTable[3]:
-                # then it is the direct noun
-                wordTable[1] = word
-                continue
     return wordTable
 
 # Translator Method
@@ -89,13 +85,22 @@ def parser(userInput, actions, targets):
 # not return a formatted word table
 
 def translator(userInput, wordTranslations):
-    # for each key in wordTranslations
-    for t in wordTranslations:
-        # for each element in translations array
-        for w in wordTranslations[t]:
-            userInput = userInput.replace(w, t)
+
+    userInput = stringReplace(userInput, wordTranslations)
+    userInput = stringReplace(userInput, vcb.verbs_dict)
+    userInput = stringReplace(userInput, vcb.nouns_dict)
+    
     return userInput
 
+# String Replace
+# receives user input(string) and a hash table of keys with an array of synonyms.
+# replaces any synonyms with the associated key
+
+def stringReplace(userInput, keyTable):
+    for key in keyTable:
+        for s in keyTable[key]:
+            userInput = userInput.replace(s, key)
+    return userInput
 
 # Get Actions
 # Takes a dictionary of wordTables and returns an array of the unique actions
@@ -116,6 +121,16 @@ def getTargets(tableDictionary):
         if len(t.split()) > 1 and t.split()[1] not in targets:
             targets.append(t.split()[1])
     return targets
+
+"""
+def getTableElement(tableDictionary, index):
+    elements = []
+    for t in tableDictionary:
+        arr = t.split()
+        if len(arr) > index and arr[index] not in elements:
+            elements.append(arr[index])
+    return elements
+"""
 if __name__ == "__main__":
     
     # Translate Strings Params
