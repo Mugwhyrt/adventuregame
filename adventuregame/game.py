@@ -8,6 +8,7 @@ __author__ = 'Phillip Johnson'
 """
 
 import world, os, grammar
+import vocabulary as vcb
 from player import Player
 import colorama
 from colorama import Fore, Back
