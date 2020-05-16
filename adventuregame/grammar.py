@@ -43,7 +43,7 @@ def parser(userInput, moves, targets):
     # search for and remove any articles
     i = 0
     while i < len(parsedString):
-        if parsedString[i] in articles:
+        if parsedString[i] in vcb.articles:
             parsedString.pop(i)
         i += 1
         
@@ -52,7 +52,7 @@ def parser(userInput, moves, targets):
         word = parsedString[i]
         # for each key in verbs_dict
         if word in moves:
-            wordTable[0] = v
+            wordTable[0] = word
             continue
 
         # for each key in nouns_dict
