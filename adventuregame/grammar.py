@@ -50,12 +50,15 @@ def parser(userInput, moves, targets):
     # for each word in the string
     for i in range(len(parsedString)):
         word = parsedString[i]
-        # for each key in verbs_dict
+        # if the word is a specified move
         if word in moves:
+            # then it is the verb
             wordTable[0] = word
             continue
 
-        # for each key in nouns_dict
+        # if the word is a specified target
+        # and that word has not already been identified as
+        # an indirect noun
         if word in targets and word != wordTable[3]:
             # then it is the direct noun
             wordTable[1] = word
@@ -85,9 +88,11 @@ def parser(userInput, moves, targets):
 # not return a formatted word table
 
 def translator(userInput, wordTranslations, verbs, nouns):
-
+    # replace any words using wordTranslations (for situation specific words)
     userInput = stringReplace(userInput, wordTranslations)
+    # replace words with key verbs
     userInput = stringReplace(userInput, verbs)
+    # replace words with key nouns
     userInput = stringReplace(userInput, nouns)
     
     return userInput
@@ -108,8 +113,12 @@ def stringReplace(userInput, keyTable):
 # "preposition", or "indirect object"
 def getTableElement(tableDictionary, index):
     elements = []
+    # for each key in tableDictionary
     for t in tableDictionary:
+        # split key into individual words
         arr = t.split()
+        # if array contains a word at the specific index
+        # and that word has not been seen already
         if len(arr) > index and arr[index] not in elements:
             elements.append(arr[index])
     return elements
