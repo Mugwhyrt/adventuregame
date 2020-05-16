@@ -15,6 +15,9 @@ from colorama import Fore, Back
 
 
 def play():
+    """
+    initialise map
+    """
     colorama.init()
     scale = world.load_tiles()
     player = Player()
@@ -26,12 +29,18 @@ def play():
     print(Fore.WHITE, end  = '\r')
     print(room.intro_text())
     while player.is_alive() and not player.victory:
+        """
+        get current tile at user's location
+        """
         room = world.tile_exists(player.location_x, player.location_y)
         player.updateMap(room)
         room.modify_player(player)
         # Check again since the room could have changed the player's state
         if player.is_alive() and not player.victory:
-            print(Fore.RED + Back.WHITE + "Choose an action")
+            """
+            get available actions and user input
+            """
+            print(Fore.RED + Back.WHITE + "What do you do?")
             # room.available_actions() is {sentence key : [table, action()]}
             available_actions = room.available_actions()
             print(Fore.GREEN + Back.BLACK, end = '\r')
@@ -40,6 +49,10 @@ def play():
             print(Fore.RED, end = '\r')
             # get user input
             user_input = input('Action: ')
+
+            """
+            process user input
+            """
             # translate user input
             translated_input = grammar.translator(user_input, {},
                                                   vcb.verbs_dict,
@@ -54,6 +67,10 @@ def play():
             #print("Action_Input: " + str(action_input))
             print(Fore.WHITE, end  = '\r')
             os.system("cls")
+
+            """
+            performed desired user action if allowed
+            """
             for action in available_actions:
                 # if action_input == action.key
                 if action_input == available_actions[action][0]:
