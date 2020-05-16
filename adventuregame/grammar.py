@@ -1,59 +1,14 @@
 """
 GRAMMAR
 
-Methods and constants for translating and parsing text. Constants are intended
-to cover non-game specific words such as verbs and prepositions. More game
-specific nouns and the result of a parsed sentence will be passed from props
-in the game
-
+Methods for translating and parsing text.
 General approach is inspired by a talk by Evan Wright for KansasFest 2017
 'Making a Text Adventure Parser' - https://www.youtube.com/watch?v=II3O1CJA-x8
 """
 __author__ = "Zachary Rohman"
 
 import actions
-
-
-# Verb Dictionary
-# dictionary for each action verb with a list of synonyms
-verbs_dict = {"go" : ["go", "head", "move", "walk", "run", "travel", "leave",
-                 "pass", "journey",  "depart", "advance", "exit"],
-         "attack" : ["attack", "kill", "assault", "beat", "hit", "hurt",
-                     "bash", "assail", "harm", "strike", "stab", "whop",
-                     "wallop", "whack", "bop"],
-         "use" : ["use", "equip", "employ", "wield", "manipulate",
-                  "utilize", "adorn", "furnish", "arm"],
-         "look" : ["look", "search", "inspect", "view", "peep",
-                   "scrutinize", "survey", "observe", "review",
-                   "probe", "investigate"],
-         "buy" : ["buy", "purchase", "procure", "acquire", "obtain",
-                  "take"],
-         "steal" : ["steal",  "loot", "snatch", "pickpocket", "pilfer",
-                    "pilfer", "swipe", "pinch", "poach", "shoplift"],
-         "flee" : ["flee", "escape","decamp", "scram", "hightail", "bolt",
-                   "disappear", "vamoose", "skedaddle", "scram"],
-         "eat" : ["eat", "drink", "consume", "devour", "swallow",
-                  "dine", "bite", "chew", "snack", "sup", "wolf",
-                  "feast", "gulp", "slup", "guzzle", "quaff", "gargle"],
-         "heal" : ["heal"]}
-# Noun Dictionary
-# dictionary for each noun for some action
-nouns_dict = {"north" : ["north"],
-              "south" : ["south"],
-              "east" : ["east"],
-              "west" : ["west"],
-              "target" : ["target"],
-              "enemy" : ["enemy", "foe", "villain", "monster"],
-              "inventory" : ["inventory", "stuff"]}
-
-# Preposition Dictionary
-prepositions_dict = {"with" : ["with", "using"],
-                "under" : ["under", "below", "beneath"],
-                "above" : ["above", "over"],
-                "in" : ["in", "among", "amongst", "within", "inside",
-                        "amidst", "around"]}
-# Articles Array
-articles = ["the", "a", "an", "ye", "thee", "yon"]
+import vocabulary as vcb
 
 # Word Table
 # {"action sentence" : }
@@ -93,10 +48,10 @@ def parser(userInput, actions, targets):
     for i in range(len(parsedString)):
         word = parsedString[i]
         # for each key in verbs_dict
-        for v in verbs_dict:
+        for v in vcb.verbs_dict:
             # if key is in available actions
             # and word is in verbs_dict
-            if v in actions and word in verbs_dict[v]:
+            if v in actions and word in vcb.verbs_dict[v]:
                 wordTable[0] = v
                 continue
         
@@ -115,10 +70,10 @@ def parser(userInput, actions, targets):
                 """
         
         # for each key in nouns_dict
-        for n in nouns_dict:
+        for n in vcb.nouns_dict:
             # if key is in available nouns
             # and word is in nouns_dict
-            if n in targets and word in nouns_dict[n] and word != wordTable[3]:
+            if n in targets and word in vcb.nouns_dict[n] and word != wordTable[3]:
                 # then it is the direct noun
                 wordTable[1] = word
                 continue
