@@ -11,8 +11,8 @@ Links to Phillip Johnson's original work:
 adventuregame requires the following libraries:
 * [colorama](https://pypi.org/project/colorama/)
 
-## Iteration Overiew
-### Iteration 0
+## Stage Overiew
+### Stage 0
 
 This iteration comprises changes to the game made as part of a birthday gift. It includes (but is not necessarily limited to): 
 * new room types (locked doors and shops)
@@ -26,6 +26,10 @@ This iteration comprises changes to the game made as part of a birthday gift. It
 
 The new map is based on a [One Page Dungeon](https://www.sageadvice.eu/2016/03/22/need-an-adventure-one-page-dungeon/) submission by Redrobes titled [Three Witches and A Hermit](https://campaignwiki.org/1pdc/2010/ ).
 
-### Iteration 1
+### Stage 1
 
 This is the current iteration. The goal of this iteration is to implement deeper changes to the UI and mechanics such as ability to display a map showing a player the rooms they've visited, and a natural language based UI (as in, user types "go north" to move to the northern tile).
+
+### Stage 2
+
+The goal of this iteration is to improve standard RPG mechanics. First by introducing a more in-depth statistical system including attributes such as strength, intelligence, and luck.
