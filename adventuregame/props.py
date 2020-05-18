@@ -52,7 +52,7 @@ class MapTile(Prop):
                  description, children, x, y):
         self.x = x
         self.y = y
-        super().__init__(self, title, synonyms, actions,
+        super().__init__(title, synonyms, actions,
                          description, children)
 
     def readFromCSV(fileName):
@@ -88,7 +88,11 @@ class MapTile(Prop):
 if __name__ == "__main__":
     tileSet = MapTile.readFromCSV("resources/tiles.csv")
     for key in tileSet:
+        #print(tileSet[key])
         tile = MapTile(key, tileSet[key][0], tileSet[key][1],
                        tileSet[key][2], [], 0, 1)
-        print(tile)
+        print("name: {}\nlocation: {},{}\nDescription:\n{}\n".format(tile.title,
+                                                                   tile.x,
+                                                                   tile.y,
+                                                                   tile))
     
