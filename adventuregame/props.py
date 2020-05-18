@@ -4,7 +4,7 @@ Props
 A super class to define general behavior for any object that interacts with
 the player. Props have
 """
-import actions, world
+#import world
 
 class Prop():
     def __init__(self, title, synonyms, moves, description, children):
@@ -37,7 +37,7 @@ class Prop():
     def readFromCSV(self, fileName):
         raise NotImplementedError()
 
-    def available_moves(self):
+    def available_actions(self):
         raise NotImplementedError()
 
     
@@ -84,13 +84,46 @@ class MapTile(Prop):
                 synonyms = []
                 moves = []
         return tiles
+    
+    def adjacent_moves(self):
+        """Returns all move actions for adjacent tiles."""
+        moves = {}
+        if world.tile_exists(self.x + 1, self.y):
+            # moves.append( { key : action} )
+            moves["go east"] = grammar.actionTable["go east"].copy()
+            #moves.append(actions.MoveEast())
+        if world.tile_exists(self.x - 1, self.y):
+            #moves.append(actions.MoveWest())
+            moves["go west"] = grammar.actionTable["go west"].copy()  
+        if world.tile_exists(self.x, self.y - 1):
+            #moves.append(actions.MoveNorth())
+            moves["go north"] = grammar.actionTable["go north"].copy()  
+        if world.tile_exists(self.x, self.y + 1):
+            #moves.append(actions.MoveSouth())
+            moves["go south"] = grammar.actionTable["go south"].copy()
+        return moves
+    
+    def available_actions(self):
+        """Returns all of the available actions in this room."""
+        moves = self.adjacent_moves()
+        #moves.append(actions.ViewInventory())
+        moves["look inventory"] = grammar.actionTable["look inventory"].copy()
+        #moves.append(actions.Heal())
+        moves["heal"] = grammar.actionTable["heal"].copy()
+        # actions need their function calls specified
+        for m in moves:
+            moves[m][1] = moves[m][1]()
+        return moves
 
-    #def available_moves()
+    def modify_player(self, the_player):
+        pass
+
+    def intro_text(self):
+        return self.description
 
 if __name__ == "__main__":
     tileSet = MapTile.readFromCSV("resources/tiles.csv")
     for key in tileSet:
-        #print(tileSet[key])
         tile = MapTile(key, tileSet[key][0], tileSet[key][1],
                        tileSet[key][2], [], 0, 1)
         print("name: {}\nlocation: {},{}\nDescription:\n{}\n".format(tile.title,
