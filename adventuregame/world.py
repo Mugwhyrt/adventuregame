@@ -1,5 +1,5 @@
-import tiles
-
+#import tiles
+from props import MapTile
 __author__ = 'Phillip Johnson'
 
 _world = {}
@@ -16,8 +16,12 @@ def tile_exists(x, y):
 
 
 def load_tiles():
+    tileSet = MapTile.readFromCSV("resources/tiles.csv")
+    #for key in tileSet:
+    #    tile = MapTile(key, tileSet[key][0], tileSet[key][1],
+    #                   tileSet[key][2], [], 0, 1)
     """Parses a file that describes the world space into the _world object"""
-    with open('resources/map.txt', 'r') as f:
+    with open('resources/stage_1_map.txt', 'r') as f:
         rows = f.readlines()
     x_max = len(rows[0].split('\t'))
     for y in range(len(rows)):
@@ -27,7 +31,9 @@ def load_tiles():
             if tile_name == 'StartingRoom':
                 global starting_position
                 starting_position = (x, y)
-            _world[(x, y)] = None if tile_name == '' else getattr(tiles, tile_name)(x, y)
+            _world[(x, y)] = None if tile_name == '' else MapTile(tile_name,
+                                                                  tileSet[tile_name][0],
+                                                                  tileSet[tile_name][1],
+                                                                  tileSet[tile_name][2],
+                                                                  [], x, y)
     return [x_max, len(rows)] 
-
-
