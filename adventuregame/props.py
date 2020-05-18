@@ -4,16 +4,16 @@ Props
 A super class to define general behavior for any object that interacts with
 the player. Props have
 """
-#import actions, world
+import actions, world
 
 class Prop():
-    def __init__(self, title, synonyms, actions, description, children):
+    def __init__(self, title, synonyms, moves, description, children):
         # single word title used to define as object in word table
         self.title = title
         # array of synonyms for prop's title
         self.synonyms = synonyms
         # array of word table verbs applicable to the prop
-        self.actions = actions
+        self.moves = moves
         # string description of object
         self.description = description
         # array of prop children
@@ -22,11 +22,11 @@ class Prop():
     def __str__(self):
         return self.description
 
-    def getChildActions(self):
-        childActions = {}
+    def getChildMoves(self):
+        childMoves = {}
         for c in children:
-            childActions.update(c.actions)
-        return childActions
+            childMoves.update(c.moves)
+        return childMoves
 
     def getChildTargets(self):
         childTargets = {}
@@ -37,7 +37,7 @@ class Prop():
     def readFromCSV(self, fileName):
         raise NotImplementedError()
 
-    def available_actions(self):
+    def available_moves(self):
         raise NotImplementedError()
 
     
@@ -48,11 +48,11 @@ class for map tiles, map tile can contain any kind of prop.
 """
 
 class MapTile(Prop):
-    def __init__(self, title, synonyms, actions,
+    def __init__(self, title, synonyms, moves,
                  description, children, x, y):
         self.x = x
         self.y = y
-        super().__init__(title, synonyms, actions,
+        super().__init__(title, synonyms, moves,
                          description, children)
 
     def readFromCSV(fileName):
@@ -61,7 +61,7 @@ class MapTile(Prop):
             rows = f.readlines()
         title = ""
         synonyms = []
-        actions = []
+        moves = []
         description = ""
         for r in rows:
             line = r.split(',')
@@ -73,17 +73,19 @@ class MapTile(Prop):
                 while i < len(line):
                     synonyms.append(line[i].replace("\n", ""))
                     i += 1
-            elif param == "actions":
+            elif param == "moves":
                 i = 1
                 while i < len(line):
-                    actions.append(line[i].replace("\n", ""))
+                    moves.append(line[i].replace("\n", ""))
                     i += 1
             elif param == "description":
                 description = line[1].replace("\n", "")
-                tiles[title] = [synonyms.copy(), actions.copy(), description]
+                tiles[title] = [synonyms.copy(), moves.copy(), description]
                 synonyms = []
-                actions = []
+                moves = []
         return tiles
+
+    #def available_moves()
 
 if __name__ == "__main__":
     tileSet = MapTile.readFromCSV("resources/tiles.csv")
