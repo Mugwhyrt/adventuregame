@@ -4,7 +4,7 @@ Props
 A super class to define general behavior for any object that interacts with
 the player. Props have
 """
-#import world
+import world, grammar
 
 class Prop():
     def __init__(self, title, synonyms, moves, description, children):
@@ -52,6 +52,7 @@ class MapTile(Prop):
                  description, children, x, y):
         self.x = x
         self.y = y
+        self.pathsChecked = False
         super().__init__(title, synonyms, moves,
                          description, children)
 
@@ -88,19 +89,27 @@ class MapTile(Prop):
     def adjacent_moves(self):
         """Returns all move actions for adjacent tiles."""
         moves = {}
+        adjacent_moves_text = "\nThere are paths to the:\n"
         if world.tile_exists(self.x + 1, self.y):
             # moves.append( { key : action} )
             moves["go east"] = grammar.actionTable["go east"].copy()
             #moves.append(actions.MoveEast())
+            adjacent_moves_text += " East "
         if world.tile_exists(self.x - 1, self.y):
             #moves.append(actions.MoveWest())
-            moves["go west"] = grammar.actionTable["go west"].copy()  
+            moves["go west"] = grammar.actionTable["go west"].copy()
+            adjacent_moves_text += " West "
         if world.tile_exists(self.x, self.y - 1):
             #moves.append(actions.MoveNorth())
-            moves["go north"] = grammar.actionTable["go north"].copy()  
+            moves["go north"] = grammar.actionTable["go north"].copy()
+            adjacent_moves_text += " North "
         if world.tile_exists(self.x, self.y + 1):
             #moves.append(actions.MoveSouth())
             moves["go south"] = grammar.actionTable["go south"].copy()
+            adjacent_moves_text += " South "
+        if not self.pathsChecked:
+            self.description += adjacent_moves_text
+            self.pathsChecked = True
         return moves
     
     def available_actions(self):
@@ -119,6 +128,7 @@ class MapTile(Prop):
         pass
 
     def intro_text(self):
+        self.adjacent_moves()
         return self.description
 
 if __name__ == "__main__":
