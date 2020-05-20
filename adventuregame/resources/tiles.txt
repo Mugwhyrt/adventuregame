@@ -1,0 +1,16 @@
+title	CavePath_0
+synonyms	CavePath_0
+moves	go
+description	The cave walls are damp and you hear a steady drip of water from the stalactites above.
+title	CavePath_1
+synonyms	CavePath_1
+moves	go
+description	Another unremarkable part of the cave. You must forge onwards
+title	CavePath_2
+synonyms	CavePath_2
+moves	go
+description	The bones of previous explorers crunch and crack under your feet.
+title	StartingRoom
+synonyms	StartingRoom
+moves	go
+description	Ya in a cave bub

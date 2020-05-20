@@ -16,7 +16,7 @@ def tile_exists(x, y):
 
 
 def load_tiles():
-    tileSet = MapTile.readFromCSV("resources/tiles.csv")
+    tileSet = MapTile.readFromTSV("resources/tiles.txt")
     #for key in tileSet:
     #    tile = MapTile(key, tileSet[key][0], tileSet[key][1],
     #                   tileSet[key][2], [], 0, 1)

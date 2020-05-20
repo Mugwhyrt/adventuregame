@@ -56,7 +56,7 @@ class MapTile(Prop):
         super().__init__(title, synonyms, moves,
                          description, children)
 
-    def readFromCSV(fileName):
+    def readFromTSV(fileName):
         tiles = {}
         with open(fileName, 'r') as f:
             rows = f.readlines()
@@ -65,7 +65,7 @@ class MapTile(Prop):
         moves = []
         description = ""
         for r in rows:
-            line = r.split(',')
+            line = r.split('\t')
             param = line[0]
             if param == "title":
                     title = line[1].replace("\n", "")
@@ -132,7 +132,7 @@ class MapTile(Prop):
         return self.description
 
 if __name__ == "__main__":
-    tileSet = MapTile.readFromCSV("resources/tiles.csv")
+    tileSet = MapTile.readFromTSV("resources/tiles.txt")
     for key in tileSet:
         tile = MapTile(key, tileSet[key][0], tileSet[key][1],
                        tileSet[key][2], [], 0, 1)
