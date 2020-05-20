@@ -4,6 +4,7 @@ Props
 A super class to define general behavior for any object that interacts with
 the player. Props have
 """
+__author__ = "Zach R"
 import world, grammar
 
 class Prop():
@@ -34,7 +35,7 @@ class Prop():
             childTargets[c.title] = c.nouns
         return childTargets
 
-    def readFromCSV(self, fileName):
+    def readFromTSV(self, fileName):
         raise NotImplementedError()
 
     def available_actions(self):
@@ -130,6 +131,7 @@ class MapTile(Prop):
     def intro_text(self):
         self.adjacent_moves()
         return self.description
+
 
 if __name__ == "__main__":
     tileSet = MapTile.readFromTSV("resources/tiles.txt")
