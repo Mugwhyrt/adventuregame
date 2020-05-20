@@ -68,7 +68,6 @@ class MapTile(Prop):
         title = ""
         synonyms = []
         description = ""
-        
         for r in rows:
             line = r.split('\t')
             param = line[0]
@@ -79,16 +78,6 @@ class MapTile(Prop):
                 while i < len(line):
                     synonyms.append(line[i].replace("\n", ""))
                     i += 1
-            """
-            not convinced this is necessary
-            commenting out for now
-            
-            elif param == "moves":
-                i = 1
-                while i < len(line):
-                    moves.append(line[i].replace("\n", ""))
-                    i += 1
-            """
             elif param == "description":
                 description = line[1].replace("\n", "")
                 tiles[title] = [synonyms.copy(), description]
