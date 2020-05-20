@@ -13,7 +13,7 @@ class Prop():
         self.title = title
         # array of synonyms for prop's title
         self.synonyms = synonyms
-        # array of word table verbs applicable to the prop
+        # map of word table verbs applicable to the prop
         self.moves = moves
         # string description of object
         self.description = description
@@ -132,7 +132,54 @@ class MapTile(Prop):
         self.adjacent_moves()
         return self.description
 
+"""
+Enemies
 
+enemies subclass
+"""
+
+class Enemy(Prop):
+    def __init__(self, title, synonyms, moves, description,
+                 children, hp, damage):
+        self.hp = hp
+        self.damage = damage
+        super().__init__(title, synonyms,
+                         ["attack {}".format(title), "flee {}".format(title)],
+                         description, children, hp, damage)
+
+    def is_alive(self):
+        return self.hp > 0
+
+    def readFromTSV(fileName):
+        enemies = {}
+        with open(fileName, 'r') as f:
+            rows = f.readlines()
+        title = ""
+        synonyms = []
+        moves = []
+        description = ""
+        for r in rows:
+            line = r.split('\t')
+            param = line[0]
+            if param == "title":
+                    title = line[1].replace("\n", "")
+            elif param == "synonyms":
+                i = 1
+                while i < len(line):
+                    synonyms.append(line[i].replace("\n", ""))
+                    i += 1
+            elif param == "moves":
+                i = 1
+                while i < len(line):
+                    moves.append(line[i].replace("\n", ""))
+                    i += 1
+            elif param == "description":
+                description = line[1].replace("\n", "")
+                tiles[title] = [synonyms.copy(), moves.copy(), description]
+                synonyms = []
+                moves = []
+        return tiles
+    
 if __name__ == "__main__":
     tileSet = MapTile.readFromTSV("resources/tiles.txt")
     for key in tileSet:
