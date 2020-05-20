@@ -33,7 +33,7 @@ def load_tiles():
                 starting_position = (x, y)
             _world[(x, y)] = None if tile_name == '' else MapTile(tile_name,
                                                                   tileSet[tile_name][0],
-                                                                  tileSet[tile_name][1],
+                                                                  {},
                                                                   tileSet[tile_name][2],
                                                                   [], x, y)
     return [x_max, len(rows)] 
