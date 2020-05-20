@@ -113,6 +113,14 @@ class MapTile(Prop):
     
     def available_actions(self):
         """Returns all of the available actions in this room."""
+        noEnemies = True
+        availMoves = {}
+        # iterate over children
+        for c in children:
+            if isinstance(c, props.Enemy):
+                self.description += "\nThere is a {}".format(c.title)
+                noEnemies = False
+                availMoves.update(c.moves)
         if not self.pathsChecked:
             self.adjacent_moves()
         # actions need their function calls specified
@@ -121,12 +129,15 @@ class MapTile(Prop):
             # it still needs it's function call specified
             if callable(self.moves[m][1]):
                 self.moves[m][1] = self.moves[m][1]()
-        return self.moves
+        if noEnemies:
+            availMoves.update(self.moves)
+        return availMoves
 
     def modify_player(self, the_player):
         pass
 
     def intro_text(self):
+        self.available_actions()
         self.adjacent_moves()
         return self.description
 
@@ -141,9 +152,13 @@ class Enemy(Prop):
                  children, hp, damage):
         self.hp = hp
         self.damage = damage
-        super().__init__(title, synonyms,
-                         ["attack {}".format(title), "flee {}".format(title)],
-                         description, children, hp, damage)
+        moves = moves
+        moves["attack {}".format(title)] = grammar.actionTable["attack enemy"].copy()
+        moves["attack {}".format(title)][0][1] = title
+        moves["flee {}".format(title)] = grammar.actionTable["flee enemy"].copy()
+        moves["flee {}".format(title)][0][1] = title
+        super().__init__(title, synonyms, moves,
+                         description, children)
 
     def is_alive(self):
         return self.hp > 0
@@ -166,17 +181,17 @@ class Enemy(Prop):
                 while i < len(line):
                     synonyms.append(line[i].replace("\n", ""))
                     i += 1
-            elif param == "moves":
-                i = 1
-                while i < len(line):
-                    moves.append(line[i].replace("\n", ""))
-                    i += 1
             elif param == "description":
                 description = line[1].replace("\n", "")
-                tiles[title] = [synonyms.copy(), moves.copy(), description]
+            elif param == "hp":
+                hp = line[1].replace("\n", "")
+            elif param == "damage":
+                damage = line[1].replace("\n", "")
+                tiles[title] = [synonyms.copy(), description,
+                                hp, damage]
                 synonyms = []
                 moves = []
-        return tiles
+        return enemies
     
 if __name__ == "__main__":
     tileSet = MapTile.readFromTSV("resources/tiles.txt")
