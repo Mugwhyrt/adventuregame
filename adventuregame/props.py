@@ -54,6 +54,10 @@ class MapTile(Prop):
         self.x = x
         self.y = y
         self.pathsChecked = False
+        moves = moves
+        moves["look inventory"] = grammar.actionTable["look inventory"].copy()
+        moves["heal"] = grammar.actionTable["heal"].copy()
+        
         super().__init__(title, synonyms, moves,
                          description, children)
 
@@ -63,8 +67,8 @@ class MapTile(Prop):
             rows = f.readlines()
         title = ""
         synonyms = []
-        moves = []
         description = ""
+        
         for r in rows:
             line = r.split('\t')
             param = line[0]
@@ -75,55 +79,60 @@ class MapTile(Prop):
                 while i < len(line):
                     synonyms.append(line[i].replace("\n", ""))
                     i += 1
+            """
+            not convinced this is necessary
+            commenting out for now
+            
             elif param == "moves":
                 i = 1
                 while i < len(line):
                     moves.append(line[i].replace("\n", ""))
                     i += 1
+            """
             elif param == "description":
                 description = line[1].replace("\n", "")
-                tiles[title] = [synonyms.copy(), moves.copy(), description]
+                tiles[title] = [synonyms.copy(), description]
                 synonyms = []
-                moves = []
+                
         return tiles
     
     def adjacent_moves(self):
         """Returns all move actions for adjacent tiles."""
-        moves = {}
+        #moves = {}
         adjacent_moves_text = "\nThere are paths to the:\n"
         if world.tile_exists(self.x + 1, self.y):
             # moves.append( { key : action} )
-            moves["go east"] = grammar.actionTable["go east"].copy()
+            self.moves["go east"] = grammar.actionTable["go east"].copy()
             #moves.append(actions.MoveEast())
             adjacent_moves_text += " East "
         if world.tile_exists(self.x - 1, self.y):
             #moves.append(actions.MoveWest())
-            moves["go west"] = grammar.actionTable["go west"].copy()
+            self.moves["go west"] = grammar.actionTable["go west"].copy()
             adjacent_moves_text += " West "
         if world.tile_exists(self.x, self.y - 1):
             #moves.append(actions.MoveNorth())
-            moves["go north"] = grammar.actionTable["go north"].copy()
+            self.moves["go north"] = grammar.actionTable["go north"].copy()
             adjacent_moves_text += " North "
         if world.tile_exists(self.x, self.y + 1):
             #moves.append(actions.MoveSouth())
-            moves["go south"] = grammar.actionTable["go south"].copy()
+            self.moves["go south"] = grammar.actionTable["go south"].copy()
             adjacent_moves_text += " South "
         if not self.pathsChecked:
             self.description += adjacent_moves_text
             self.pathsChecked = True
-        return moves
+        #return self.moves
     
     def available_actions(self):
         """Returns all of the available actions in this room."""
-        moves = self.adjacent_moves()
-        #moves.append(actions.ViewInventory())
-        moves["look inventory"] = grammar.actionTable["look inventory"].copy()
-        #moves.append(actions.Heal())
-        moves["heal"] = grammar.actionTable["heal"].copy()
+        if not self.pathsChecked:
+            self.adjacent_moves()
         # actions need their function calls specified
-        for m in moves:
-            moves[m][1] = moves[m][1]()
-        return moves
+        for m in self.moves:
+            # if method is callable
+            # it still needs it's function call specified
+            if callable(self.moves[m][1]):
+                self.moves[m][1] = self.moves[m][1]()
+        return self.moves
 
     def modify_player(self, the_player):
         pass
