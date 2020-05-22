@@ -45,9 +45,6 @@ def play():
             # room.available_actions() is {sentence key : [table, action()]}
             available_actions = room.available_actions()
             print(Fore.GREEN + Back.BLACK, end = '\r')
-            #for action in available_actions:
-            #    print(action)
-            print(Fore.RED, end = '\r')
             # get user input
             user_input = input('Action: ')
 
@@ -62,10 +59,6 @@ def play():
             actions = grammar.getTableElement(available_actions, 0)
             targets = grammar.getTableElement(available_actions, 1)
             action_input = grammar.parser(translated_input, actions, targets)
-            #print("avail_actions: " + str(available_actions))
-            #print("actions: " + str(actions))
-            #print("targets: " + str(targets))
-            #print("Action_Input: " + str(action_input))
             print(Fore.WHITE, end  = '\r')
             os.system("cls")
 
@@ -73,9 +66,7 @@ def play():
             performed desired user action if allowed
             """
             for action in available_actions:
-                # if action_input == action.key
                 if action_input == available_actions[action][0]:
-                    # player.do_action(action.action)
                     player.do_action(available_actions[action][1],
                                      **available_actions[action][1].kwargs)
                     break
