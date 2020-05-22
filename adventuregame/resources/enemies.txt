@@ -1,0 +1,10 @@
+title	ogre	
+synonyms	ogre	
+description	a big, smelly ogre	
+hp	10	
+damage	5	
+title	rat	
+synonyms	rat	rodent
+description	a big, hairy rat	
+hp	5	
+damage	1	
