@@ -5,7 +5,7 @@ A super class to define general behavior for any object that interacts with
 the player. Props have
 """
 __author__ = "Zach R"
-import world, grammar, copy
+import world, grammar, copy 
 
 class Prop():
     def __init__(self, title, synonyms, moves, description, children):
@@ -136,10 +136,13 @@ class MapTile(Prop):
         for c in self.children:
             #print(self.children[c])
             if isinstance(self.children[c][0], Enemy):
-                for enemy in self.children[c]:
-                    self.description += "\nThere is a {}".format(enemy.title)
+                for e in self.children[c]:
+                    self.description += "\nThere is a {}".format(e.title)
                     noEnemies = False
-                    availMoves.update(enemy.moves)
+                    availMoves.update(e.moves)
+                    # TO DO
+                    # flee can be done once as soon as at least one enemy is detected
+                    #availMoves["flee "+e.title][0] = availMoves["flee "+e.title][1](tile = self)
         if not self.pathsChecked:
             self.adjacent_moves()
         # actions need their function calls specified
@@ -176,6 +179,7 @@ class Enemy(Prop):
         fleeString = "flee {}".format(title)
         moves[attackString] = grammar.actionTable["attack enemy"].copy()
         moves[attackString][0][1] = title
+        moves[attackString][1] = moves[attackString][1](enemy = self)
         moves[fleeString] = grammar.actionTable["flee enemy"].copy()
         moves[fleeString][0][1] = title
         super().__init__(title, synonyms, moves,
