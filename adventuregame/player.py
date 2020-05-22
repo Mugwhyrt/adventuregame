@@ -82,9 +82,19 @@ class Player():
 
     def flee(self, tile):
         """Moves the player randomly to an adjacent tile"""
-        available_moves = tile.adjacent_moves()
+        """
+        available_wordTables = tile.adjacent_moves()
+        print("fleeing!")
+        available_moves = []
+        for key in available_wordTables:
+            available_moves.append(available_wordTables[key][1])
         r = random.randint(0, len(available_moves) - 1)
-        self.do_action(available_moves[r])
+        #self.do_action(available_moves[r])
+        available_moves[r]
+        #self.method
+        """
+        # doesn't work with new action input system
+        pass
 
     def add_loot(self, item, text):
         print(text)
