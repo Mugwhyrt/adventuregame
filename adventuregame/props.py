@@ -2,7 +2,7 @@
 Props
 
 A super class to define general behavior for any object that interacts with
-the player. Props have
+the player.
 """
 __author__ = "Zach R"
 import world, grammar, copy 
@@ -25,19 +25,23 @@ class Prop():
 
     def copy(self):
         return copy.copy(self)
-        
+
+    # Return a dictionary of the moves for each immediate child 
     def getChildMoves(self):
         childMoves = {}
         for c in children:
             childMoves.update(c.moves)
         return childMoves
 
+    # Return a dictinory of the title and synonyms
+    # for each immediate child
     def getChildTargets(self):
         childTargets = {}
         for c in children:
             childTargets[c.title] = c.nouns
         return childTargets
 
+    # Add a child to the prop
     def addChild(self, child):
         if child.title not in self.children:
             self.children[child.title] = []
@@ -126,7 +130,6 @@ class MapTile(Prop):
         if not self.pathsChecked:
             self.description += adjacent_moves_text
             self.pathsChecked = True
-        #return self.moves
     
     def available_actions(self):
         """Returns all of the available actions in this room."""
@@ -134,7 +137,6 @@ class MapTile(Prop):
         availMoves = {}
         # iterate over children
         for c in self.children:
-            #print(self.children[c])
             if isinstance(self.children[c][0], Enemy):
                 for e in self.children[c]:
                     self.description += "\nThere is a {}".format(e.title)
