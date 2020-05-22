@@ -11,7 +11,7 @@ import actions
 import vocabulary as vcb
 
 # Word Table
-# {"action sentence" : }
+# {"action sentence" : [[action array], actions.method]}
 actionTable = {"baseTable" : [["verb", "direct object", "preposition", "indirect object"], None],
              "go north" : [["go", "north", "preposition", "indirect object"], actions.MoveNorth],
                "go east" : [["go", "east", "preposition", "indirect object"], actions.MoveEast],
@@ -29,8 +29,6 @@ actionTable = {"baseTable" : [["verb", "direct object", "preposition", "indirect
 # Returns wordTable, [string, string, string, string], an array corresponding
 #   to the ["verb", "direct object", "preposition", "indirect object"] for some action
 #
-# Parse is meant for 
-
 def parser(userInput, moves, targets):
 
     # Word Table contains keys to inform the game
