@@ -106,6 +106,7 @@ class MapTile(Prop):
         """Returns all move actions for adjacent tiles."""
         #moves = {}
         adjacent_moves_text = "\nThere are paths to the:\n"
+        adjacent_moves = {}
 
         coords = [[1, 0],[-1, 0],[0, -1],[0, 1]]
         cardinals = ["east", "west", "north", "south"]
@@ -117,12 +118,15 @@ class MapTile(Prop):
         for i in range(len(cardinals)):
             if world.tile_exists(self.x + coords[i][0], self.y + coords[i][1]):
                 actionString = "go {}".format(cardinals[i])
-                self.moves[actionString] = grammar.actionTable[actionString].copy()
+                adjacent_moves[actionString] = grammar.actionTable[actionString].copy()
+                adjacent_moves[actionString] = adjacent_moves[actionString]
                 adjacent_moves_text += " {} ".format(cardinals[i])
                 
         if not self.pathsChecked:
             self.description += adjacent_moves_text
             self.pathsChecked = True
+        #self.moves.update(adjacent_moves)
+        return adjacent_moves
     
     def available_actions(self):
         """Returns all of the available actions in this room."""
@@ -137,7 +141,7 @@ class MapTile(Prop):
                     availMoves.update(e.moves)
                     # TO DO
                     # flee can be done once as soon as at least one enemy is detected
-                    #availMoves["flee "+e.title][0] = availMoves["flee "+e.title][1](tile = self)
+                    
         if not self.pathsChecked:
             self.adjacent_moves()
         # actions need their function calls specified
@@ -148,6 +152,9 @@ class MapTile(Prop):
                 self.moves[m][1] = self.moves[m][1]()
         if noEnemies:
             availMoves.update(self.moves)
+        else:
+            availMoves["flee enemy"] = grammar.actionTable["flee enemy"].copy()
+            availMoves["flee enemy"][1] = availMoves["flee enemy"][1](tile = self)
         return availMoves
 
     def modify_player(self, the_player):
@@ -155,7 +162,7 @@ class MapTile(Prop):
 
     def intro_text(self):
         self.available_actions()
-        self.adjacent_moves()
+        self.moves.update(self.adjacent_moves())
         return self.description
 
 """
@@ -175,8 +182,8 @@ class Enemy(Prop):
         moves[attackString] = grammar.actionTable["attack enemy"].copy()
         moves[attackString][0][1] = title
         moves[attackString][1] = moves[attackString][1](enemy = self)
-        moves[fleeString] = grammar.actionTable["flee enemy"].copy()
-        moves[fleeString][0][1] = title
+        #moves[fleeString] = grammar.actionTable["flee enemy"].copy()
+        #moves[fleeString][0][1] = title
         super().__init__(title, synonyms, moves,
                          description, children)
     
