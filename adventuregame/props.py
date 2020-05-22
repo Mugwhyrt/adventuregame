@@ -17,7 +17,7 @@ class Prop():
         self.moves = moves
         # string description of object
         self.description = description
-        # array of prop children
+        # map of prop children
         self.children = children
 
     def __str__(self):
@@ -39,10 +39,9 @@ class Prop():
         return childTargets
 
     def addChild(self, child):
-        if child.title in children:
-            children[child.title].append(child)
-        else:
-            children[child.title] = [child]
+        if child.title not in self.children:
+            self.children[child.title] = []
+        self.children[child.title].append(child)
 
     def readFromTSV(self, fileName):
         raise NotImplementedError()
@@ -214,7 +213,7 @@ if __name__ == "__main__":
     enemySet = {}
     for key in enemyKeySet:
         enemy = Enemy(key, enemyKeySet[key][0], {},
-                       enemyKeySet[key][1], [], int(enemyKeySet[key][2]),
+                       enemyKeySet[key][1], {}, int(enemyKeySet[key][2]),
                       int(enemyKeySet[key][3]))
         enemySet[key] = enemy
         print("name: {}\nhp: {}, dmg: {}\nDescription:\n{}\n".format(enemy.title,
@@ -226,12 +225,14 @@ if __name__ == "__main__":
     tileSet = {}
     for key in roomKeySet:
         tile = MapTile(key, roomKeySet[key][0], {},
-                       roomKeySet[key][1], [], 0, 1)
+                       roomKeySet[key][1], {}, 0, 1)
         tileSet[key] = tile
         print("name: {}\nlocation: {}, {}\nDescription:\n{}\n".format(tile.title,
                                                                    tile.x,
                                                                    tile.y,
                                                                    tile))
 
-    #tileSet["CavePath_0"].addChild(enemySet["rat"].copy())
-    #print(tileSet.children)
+    tileSet["CavePath_0"].addChild(enemySet["rat"].copy())
+    tileSet["CavePath_0"].addChild(enemySet["rat"].copy())
+    tileSet["CavePath_0"].addChild(enemySet["ogre"].copy())
+    print(tileSet["CavePath_0"].children)
