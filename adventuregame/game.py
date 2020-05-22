@@ -65,11 +65,17 @@ def play():
             """
             performed desired user action if allowed
             """
+            actionFound = False
             for action in available_actions:
+                print(available_actions[action][0])
                 if action_input == available_actions[action][0]:
+                    actionFound = True
                     player.do_action(available_actions[action][1],
                                      **available_actions[action][1].kwargs)
                     break
+            if not actionFound:
+                print("you can't do that")
+                
     if not player.is_alive():
         print("You have died!")
 
