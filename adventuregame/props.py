@@ -5,7 +5,7 @@ A super class to define general behavior for any object that interacts with
 the player. Props have
 """
 __author__ = "Zach R"
-import world, grammar
+import world, grammar, copy
 
 class Prop():
     def __init__(self, title, synonyms, moves, description, children):
@@ -23,6 +23,9 @@ class Prop():
     def __str__(self):
         return self.description
 
+    def copy(self):
+        raise NotImplementedError()
+        
     def getChildMoves(self):
         childMoves = {}
         for c in children:
@@ -34,6 +37,12 @@ class Prop():
         for c in children:
             childTargets[c.title] = c.nouns
         return childTargets
+
+    def addChild(self, child):
+        if child.title in children:
+            children[child.title].append(child)
+        else:
+            children[child.title] = [child]
 
     def readFromTSV(self, fileName):
         raise NotImplementedError()
@@ -60,6 +69,11 @@ class MapTile(Prop):
         
         super().__init__(title, synonyms, moves,
                          description, children)
+
+    def copy(self):
+        return self.__init__(self.title.copy(), self.synonyms.copy(),
+                             self.moves.copy(), self.description.copy(),
+                             self.children(), self.x.copy(), self.y.copy())
 
     def readFromTSV(fileName):
         tiles = {}
@@ -89,6 +103,10 @@ class MapTile(Prop):
         """Returns all move actions for adjacent tiles."""
         #moves = {}
         adjacent_moves_text = "\nThere are paths to the:\n"
+        # TO DO
+        # compress into for loop
+        #   coords = [(xPlus_0, yPlus_0), etc]
+        #   cardinals = ["east", "west", "north", "south"]
         if world.tile_exists(self.x + 1, self.y):
             # moves.append( { key : action} )
             self.moves["go east"] = grammar.actionTable["go east"].copy()
@@ -153,13 +171,18 @@ class Enemy(Prop):
         self.hp = hp
         self.damage = damage
         moves = moves
-        moves["attack {}".format(title)] = grammar.actionTable["attack enemy"].copy()
-        moves["attack {}".format(title)][0][1] = title
-        moves["flee {}".format(title)] = grammar.actionTable["flee enemy"].copy()
-        moves["flee {}".format(title)][0][1] = title
+        attackString = "attack {}".format(title)
+        fleeString = "flee {}".format(title)
+        moves[attackString] = grammar.actionTable["attack enemy"].copy()
+        moves[attackString][0][1] = title
+        moves[fleeString] = grammar.actionTable["flee enemy"].copy()
+        moves[fleeString][0][1] = title
         super().__init__(title, synonyms, moves,
                          description, children)
+    def copy(self):
+        return copy.copy(self)
 
+    
     def is_alive(self):
         return self.hp > 0
 
@@ -185,21 +208,37 @@ class Enemy(Prop):
                 description = line[1].replace("\n", "")
             elif param == "hp":
                 hp = line[1].replace("\n", "")
-            elif param == "damage":
+            elif param == "damage":      
                 damage = line[1].replace("\n", "")
-                tiles[title] = [synonyms.copy(), description,
+                enemies[title] = [synonyms.copy(), description,
                                 hp, damage]
                 synonyms = []
                 moves = []
+        
         return enemies
     
 if __name__ == "__main__":
-    tileSet = MapTile.readFromTSV("resources/tiles.txt")
-    for key in tileSet:
-        tile = MapTile(key, tileSet[key][0], tileSet[key][1],
-                       tileSet[key][2], [], 0, 1)
-        print("name: {}\nlocation: {},{}\nDescription:\n{}\n".format(tile.title,
+    enemyKeySet = Enemy.readFromTSV("resources/enemies.txt")
+    enemySet = {}
+    for key in enemyKeySet:
+        enemy = Enemy(key, enemyKeySet[key][0], {},
+                       enemyKeySet[key][1], [], int(enemyKeySet[key][2]),
+                      int(enemyKeySet[key][3]))
+        enemySet[key] = enemy
+        print("name: {}\nhp: {}, dmg: {}\nDescription:\n{}\n".format(enemy.title,
+                                                                   enemy.hp,
+                                                                   enemy.damage,
+                                                                   enemy))
+
+    roomKeySet = MapTile.readFromTSV("resources/tiles.txt")
+    tileSet = {}
+    for key in roomKeySet:
+        tile = MapTile(key, roomKeySet[key][0], {},
+                       roomKeySet[key][1], [], 0, 1)
+        tileSet[key] = tile
+        print("name: {}\nlocation: {}, {}\nDescription:\n{}\n".format(tile.title,
                                                                    tile.x,
                                                                    tile.y,
                                                                    tile))
-    
+    tileSet["CavePath_0"].addChild(enemySet["rat"].copy())
+    print(tileSet.children)
