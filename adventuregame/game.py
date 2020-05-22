@@ -67,7 +67,7 @@ def play():
             """
             actionFound = False
             for action in available_actions:
-                print(available_actions[action][0])
+                #print(available_actions[action][0])
                 if action_input == available_actions[action][0]:
                     actionFound = True
                     player.do_action(available_actions[action][1],
