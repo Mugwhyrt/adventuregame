@@ -128,11 +128,13 @@ class MapTile(Prop):
         noEnemies = True
         availMoves = {}
         # iterate over children
-        for c in children:
-            if isinstance(c, props.Enemy):
-                self.description += "\nThere is a {}".format(c.title)
-                noEnemies = False
-                availMoves.update(c.moves)
+        for c in self.children:
+            #print(self.children[c])
+            if isinstance(self.children[c][0], Enemy):
+                for enemy in self.children[c]:
+                    self.description += "\nThere is a {}".format(enemy.title)
+                    noEnemies = False
+                    availMoves.update(enemy.moves)
         if not self.pathsChecked:
             self.adjacent_moves()
         # actions need their function calls specified
@@ -233,6 +235,8 @@ if __name__ == "__main__":
                                                                    tile))
 
     tileSet["CavePath_0"].addChild(enemySet["rat"].copy())
-    tileSet["CavePath_0"].addChild(enemySet["rat"].copy())
     tileSet["CavePath_0"].addChild(enemySet["ogre"].copy())
-    print(tileSet["CavePath_0"].children)
+    actions = tileSet["CavePath_0"].available_actions()
+    for a in actions:
+        print(a)
+    
