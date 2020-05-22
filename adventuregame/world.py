@@ -1,5 +1,5 @@
 #import tiles
-from props import MapTile
+from props import MapTile, Enemy
 __author__ = 'Phillip Johnson'
 
 _world = {}
@@ -36,23 +36,15 @@ def load_tiles():
 
 def load_props():
     enemySet = Enemy.readFromTSV("resources/enemies.txt")
-    #for key in tileSet:
-    #    tile = MapTile(key, tileSet[key][0], tileSet[key][1],
-    #                   tileSet[key][2], [], 0, 1)
-    """Parses a file that describes the world space into the _world object"""
-    with open('resources/stage_1_map.txt', 'r') as f:
+    """Parses a file that describes the props in the _world object"""
+    with open('resources/stage_1_prop.txt', 'r') as f:
         rows = f.readlines()
     x_max = len(rows[0].split('\t'))
     for y in range(len(rows)):
         cols = rows[y].split('\t')
         for x in range(x_max):
-            tile_name = cols[x].replace('\n', '')
-            if tile_name == 'StartingRoom':
-                global starting_position
-                starting_position = (x, y)
-            _world[(x, y)] = None if tile_name == '' else MapTile(tile_name,
-                                                                  tileSet[tile_name][0],
-                                                                  {},
-                                                                  tileSet[tile_name][1],
-                                                                  [], x, y)
-    return [x_max, len(rows)]
+                prop_arr = cols[x].replace('\n', '').split(',')
+                if prop_arr[0] != '':
+                        for prop in prop_arr:
+                                _world[(x, y)].addChild(enemySet[prop].copy())
+                        
