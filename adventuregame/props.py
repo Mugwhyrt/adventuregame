@@ -24,7 +24,7 @@ class Prop():
         return self.description
 
     def copy(self):
-        raise NotImplementedError()
+        return copy.copy(self)
         
     def getChildMoves(self):
         childMoves = {}
@@ -69,11 +69,6 @@ class MapTile(Prop):
         
         super().__init__(title, synonyms, moves,
                          description, children)
-
-    def copy(self):
-        return self.__init__(self.title.copy(), self.synonyms.copy(),
-                             self.moves.copy(), self.description.copy(),
-                             self.children(), self.x.copy(), self.y.copy())
 
     def readFromTSV(fileName):
         tiles = {}
@@ -179,9 +174,6 @@ class Enemy(Prop):
         moves[fleeString][0][1] = title
         super().__init__(title, synonyms, moves,
                          description, children)
-    def copy(self):
-        return copy.copy(self)
-
     
     def is_alive(self):
         return self.hp > 0
@@ -240,5 +232,6 @@ if __name__ == "__main__":
                                                                    tile.x,
                                                                    tile.y,
                                                                    tile))
-    tileSet["CavePath_0"].addChild(enemySet["rat"].copy())
-    print(tileSet.children)
+
+    #tileSet["CavePath_0"].addChild(enemySet["rat"].copy())
+    #print(tileSet.children)
