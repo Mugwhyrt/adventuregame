@@ -20,6 +20,7 @@ def play():
     """
     colorama.init()
     scale = world.load_tiles()
+    world.load_props()
     player = Player()
     # initialize an empty world map to the scale returned from loading
     # the world tiles
