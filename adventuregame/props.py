@@ -106,27 +106,20 @@ class MapTile(Prop):
         """Returns all move actions for adjacent tiles."""
         #moves = {}
         adjacent_moves_text = "\nThere are paths to the:\n"
-        # TO DO
-        # compress into for loop
-        #   coords = [(xPlus_0, yPlus_0), etc]
-        #   cardinals = ["east", "west", "north", "south"]
-        if world.tile_exists(self.x + 1, self.y):
-            # moves.append( { key : action} )
-            self.moves["go east"] = grammar.actionTable["go east"].copy()
-            #moves.append(actions.MoveEast())
-            adjacent_moves_text += " East "
-        if world.tile_exists(self.x - 1, self.y):
-            #moves.append(actions.MoveWest())
-            self.moves["go west"] = grammar.actionTable["go west"].copy()
-            adjacent_moves_text += " West "
-        if world.tile_exists(self.x, self.y - 1):
-            #moves.append(actions.MoveNorth())
-            self.moves["go north"] = grammar.actionTable["go north"].copy()
-            adjacent_moves_text += " North "
-        if world.tile_exists(self.x, self.y + 1):
-            #moves.append(actions.MoveSouth())
-            self.moves["go south"] = grammar.actionTable["go south"].copy()
-            adjacent_moves_text += " South "
+
+        coords = [[1, 0],[-1, 0],[0, -1],[0, 1]]
+        cardinals = ["east", "west", "north", "south"]
+
+        # for each cardinal direction, increment x and y by
+        # the respective array in coords
+        # if there is a tile, add corresponding move action
+        # to the tile's move set
+        for i in range(len(cardinals)):
+            if world.tile_exists(self.x + coords[i][0], self.y + coords[i][1]):
+                actionString = "go {}".format(cardinals[i])
+                self.moves[actionString] = grammar.actionTable[actionString].copy()
+                adjacent_moves_text += " {} ".format(cardinals[i])
+                
         if not self.pathsChecked:
             self.description += adjacent_moves_text
             self.pathsChecked = True
