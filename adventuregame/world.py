@@ -17,6 +17,25 @@ def tile_exists(x, y):
 
 def load_tiles():
     tileSet = MapTile.readFromTSV("resources/tiles.txt")
+    """Parses a file that describes the world space into the _world object"""
+    with open('resources/stage_1_map.txt', 'r') as f:
+        rows = f.readlines()
+    x_max = len(rows[0].split('\t'))
+    for y in range(len(rows)):
+        cols = rows[y].split('\t')
+        for x in range(x_max):
+            tile_name = cols[x].replace('\n', '')
+            if tile_name == 'StartingRoom':
+                global starting_position
+                starting_position = (x, y)
+            _world[(x, y)] = None if tile_name == '' else tileSet[tile_name].copy()
+            if _world[(x, y) ] != None:
+                    _world[(x, y)].x = x
+                    _world[(x, y)].y = y
+    return [x_max, len(rows)]
+
+def load_props():
+    enemySet = Enemy.readFromTSV("resources/enemies.txt")
     #for key in tileSet:
     #    tile = MapTile(key, tileSet[key][0], tileSet[key][1],
     #                   tileSet[key][2], [], 0, 1)
@@ -36,4 +55,4 @@ def load_tiles():
                                                                   {},
                                                                   tileSet[tile_name][1],
                                                                   [], x, y)
-    return [x_max, len(rows)] 
+    return [x_max, len(rows)]
