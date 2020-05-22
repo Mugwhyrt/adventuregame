@@ -90,8 +90,13 @@ class MapTile(Prop):
                 description = line[1].replace("\n", "")
                 tiles[title] = [synonyms.copy(), description]
                 synonyms = []
-                
-        return tiles
+
+        tileSet = {}
+        for key in tiles:
+            tile = MapTile(key, tiles[key][0], {}, tiles[key][1],
+                           {}, -1, -1)
+            tileSet[key] = tile
+        return tileSet
     
     def adjacent_moves(self):
         """Returns all move actions for adjacent tiles."""
@@ -207,32 +212,19 @@ class Enemy(Prop):
                                 hp, damage]
                 synonyms = []
                 moves = []
-        
-        return enemies
+                
+        enemySet = {}
+        for key in enemies:
+            enemy = Enemy(key, enemies[key][0], {},
+                           enemies[key][1], {}, int(enemies[key][2]),
+                          int(enemies[key][3]))
+            enemySet[key] = enemy
+            
+        return enemySet
     
 if __name__ == "__main__":
-    enemyKeySet = Enemy.readFromTSV("resources/enemies.txt")
-    enemySet = {}
-    for key in enemyKeySet:
-        enemy = Enemy(key, enemyKeySet[key][0], {},
-                       enemyKeySet[key][1], {}, int(enemyKeySet[key][2]),
-                      int(enemyKeySet[key][3]))
-        enemySet[key] = enemy
-        print("name: {}\nhp: {}, dmg: {}\nDescription:\n{}\n".format(enemy.title,
-                                                                   enemy.hp,
-                                                                   enemy.damage,
-                                                                   enemy))
-
-    roomKeySet = MapTile.readFromTSV("resources/tiles.txt")
-    tileSet = {}
-    for key in roomKeySet:
-        tile = MapTile(key, roomKeySet[key][0], {},
-                       roomKeySet[key][1], {}, 0, 1)
-        tileSet[key] = tile
-        print("name: {}\nlocation: {}, {}\nDescription:\n{}\n".format(tile.title,
-                                                                   tile.x,
-                                                                   tile.y,
-                                                                   tile))
+    enemySet = Enemy.readFromTSV("resources/enemies.txt")
+    tileSet = MapTile.readFromTSV("resources/tiles.txt")
 
     tileSet["CavePath_0"].addChild(enemySet["rat"].copy())
     tileSet["CavePath_0"].addChild(enemySet["ogre"].copy())
