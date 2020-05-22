@@ -73,12 +73,12 @@ class Player():
                     max_dmg = i.damage
                     best_weapon = i
 
-        print("You use {} against {}!".format(best_weapon.name, enemy.name))
+        print("You use {} against {}!".format(best_weapon.name, enemy.title))
         enemy.hp -= best_weapon.damage
         if not enemy.is_alive():
-            print("You killed {}!".format(enemy.name))
+            print("You killed {}!".format(enemy.title))
         else:
-            print("{} HP is {}.".format(enemy.name, enemy.hp))
+            print("{} HP is {}.".format(enemy.title, enemy.hp))
 
     def flee(self, tile):
         """Moves the player randomly to an adjacent tile"""
