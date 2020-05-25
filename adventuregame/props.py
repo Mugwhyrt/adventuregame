@@ -106,7 +106,6 @@ class MapTile(Prop):
     
     def adjacent_moves(self):
         """Returns all move actions for adjacent tiles."""
-        #moves = {}
         adjacent_moves_text = "\nThere are paths to the:\n"
         adjacent_moves = {}
 
@@ -121,7 +120,6 @@ class MapTile(Prop):
             if world.tile_exists(self.x + coords[i][0], self.y + coords[i][1]):
                 actionString = "go {}".format(cardinals[i])
                 adjacent_moves[actionString] = grammar.actionTable[actionString].copy()
-                #adjacent_moves[actionString] = adjacent_moves[actionString]
                 adjacent_moves_text += " {} ".format(cardinals[i])
                 
         if not self.pathsChecked:
@@ -192,8 +190,6 @@ class Enemy(Prop):
         moves[attackString] = grammar.actionTable["attack enemy"].copy()
         moves[attackString][0][1] = title
         moves[attackString][1] = moves[attackString][1](enemy = self)
-        #moves[fleeString] = grammar.actionTable["flee enemy"].copy()
-        #moves[fleeString][0][1] = title
         super().__init__(title, synonyms, moves,
                          description, children)
     
