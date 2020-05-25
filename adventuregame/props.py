@@ -119,13 +119,13 @@ class MapTile(Prop):
             if world.tile_exists(self.x + coords[i][0], self.y + coords[i][1]):
                 actionString = "go {}".format(cardinals[i])
                 adjacent_moves[actionString] = grammar.actionTable[actionString].copy()
-                adjacent_moves[actionString] = adjacent_moves[actionString]
+                #adjacent_moves[actionString] = adjacent_moves[actionString]
                 adjacent_moves_text += " {} ".format(cardinals[i])
                 
         if not self.pathsChecked:
             self.description += adjacent_moves_text
             self.pathsChecked = True
-        #self.moves.update(adjacent_moves)
+        self.moves.update(adjacent_moves)
         return adjacent_moves
     
     def available_actions(self):
