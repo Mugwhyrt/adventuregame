@@ -6,6 +6,8 @@ the player.
 """
 __author__ = "Zach R"
 import world, grammar, copy 
+import sys
+current_module = sys.modules[__name__]
 
 class Prop():
     def __init__(self, title, synonyms, moves, description, children):
@@ -136,11 +138,11 @@ class MapTile(Prop):
         for c in self.children:
             if isinstance(self.children[c][0], Enemy):
                 for e in self.children[c]:
+                    #if e.is_alive():
                     self.description += "\nThere is a {}".format(e.title)
                     noEnemies = False
                     availMoves.update(e.moves)
-                    # TO DO
-                    # flee can be done once as soon as at least one enemy is detected
+        #print("no enemies? " + str(noEnemies))
                     
         if not self.pathsChecked:
             self.adjacent_moves()
@@ -158,7 +160,15 @@ class MapTile(Prop):
         return availMoves
 
     def modify_player(self, the_player):
-        pass
+        for arr in self.children:
+            childArr = self.children[arr]
+            for c in childArr:
+                if isinstance(c, current_module.Enemy):
+                    if c.is_alive():
+                        the_player.hp = the_player.hp - c.damage
+                        print("Enemy does {} damage. You have {} HP remaining.".format(c.damage,
+                                                                                       the_player.hp))
+                        
 
     def intro_text(self):
         self.available_actions()
