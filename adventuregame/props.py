@@ -26,7 +26,7 @@ class Prop():
         return self.description
 
     def copy(self):
-        return copy.copy(self)
+        return copy.deepcopy(self)
 
     # Return a dictionary of the moves for each immediate child 
     def getChildMoves(self):
