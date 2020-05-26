@@ -139,11 +139,14 @@ class MapTile(Prop):
                     if e.is_alive():
                         self.description += "\nThere is a {}".format(e.title)
                         noEnemies = False
+                        """
                         attackE = grammar.actionTable["attack enemy"].copy()
                         attackE[1] = attackE[1](enemy = e)
                         attackE[0][1] = e.title
                         attackString = "attack {}".format(e.title)
                         availMoves[attackString] = attackE
+                        """
+                        availMoves.update(e.moves)
                     
         if not self.pathsChecked:
             self.adjacent_moves()
@@ -189,6 +192,9 @@ class Enemy(Prop):
         self.damage = damage
         moves = moves
         attackString = "attack {}".format(title)
+        moves[attackString] = grammar.actionTable["attack enemy"].copy()
+        moves[attackString][1] = moves[attackString][1](enemy = self)
+        moves[attackString][0][1] = title
         fleeString = "flee {}".format(title)
         super().__init__(title, synonyms, moves,
                          description, children)
