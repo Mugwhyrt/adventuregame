@@ -144,7 +144,6 @@ class MapTile(Prop):
                         attackE[0][1] = e.title
                         attackString = "attack {}".format(e.title)
                         availMoves[attackString] = attackE
-        #print("no enemies? " + str(noEnemies))
                     
         if not self.pathsChecked:
             self.adjacent_moves()
