@@ -247,9 +247,6 @@ class Item(Prop):
     def __init__(self, title, synonyms, moves, description, children,
                  value):
         self.value = value
-        # TO DO
-        # Moves for all items should include
-        # the search action
         super().__init__(title, synonyms, moves, description, children)
 
     def __str__(self):
@@ -351,7 +348,13 @@ if __name__ == "__main__":
     itemSet = Item.readFromTSV("resources/items.txt")
     for i in itemSet:
         print(itemSet[i])
-
+    
+    itemA = itemSet["sword"].copy()
+    itemB = itemSet["sword"].copy()
+    itemC = itemSet["sword"]
+    print("A  == B is {}".format(itemA == itemB))
+    print("C == src is {}".format(itemC == itemSet["sword"]))
+    
     tileSet["CavePath_0"].addChild(enemySet["rat"].copy())
     tileSet["CavePath_0"].addChild(enemySet["ogre"].copy())
     actions = tileSet["CavePath_0"].available_actions()
