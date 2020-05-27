@@ -19,7 +19,7 @@ actionTable = {"baseTable" : [["verb", "direct object", "preposition", "indirect
                "go south" : [["go", "south", "preposition", "indirect object"], actions.MoveSouth],
                "look inventory" : [["look", "inventory", "preposition", "indirect object"], actions.ViewInventory],
                "heal" : [["heal", "direct object", "preposition", "indirect object"], actions.Heal],
-               "take target" : [["take", "target", "preposition", "indirect object"], actions.TakeItem],
+               "take target" : [["take", "target", "preposition", "indirect object"], actions.Take],
                "attack enemy" : [["attack", "enemy", "preposition", "indirect object"],actions.Attack],
                "flee enemy" : [["flee", "enemy", "preposition", "indirect object"],actions.Flee],
                "buy" : [["buy", "direct object", "preposition", "indirect object"], actions.Buy]}
