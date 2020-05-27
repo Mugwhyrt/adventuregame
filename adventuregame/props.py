@@ -256,14 +256,73 @@ class Item(Prop):
         return "{}\n=====\n{}\nValue: {}\n".format(self.title, self.description, self.value)
 
     def readFromTSV(fileName):
-        pass
+        items = {}
+        with open(fileName, 'r') as f:
+            rows = f.readlines()
+        subclass = ""
+        title = ""
+        synonyms = []
+        description = ""
+        value = 0
+        damage = 0
+        amt = 0
+        for r in rows:
+            line = r.split('\t')
+            param = line[0]
+            if param == "subclass":
+                subclass = line[1].replace("\n", "")
+            elif param == "title":
+                    title = line[1].replace("\n", "")
+            elif param == "synonyms":
+                i = 1
+                while i < len(line):
+                    synonyms.append(line[i].replace("\n", ""))
+                    i += 1
+            elif param == "value":
+                value = line[1].replace("\n", "")
+            elif param == "damage":
+                damage = int(line[1].replace("\n", ""))
+            elif param == "amt":
+                amt = int(line[1].replace("\n", ""))
+            elif param == "description":
+                # store subclass in items[title]
+                # use subclass in following for loop
+                # to determine which constructor to use
+                description = line[1].replace("\n", "")
+                items[title] = [subclass, synonyms.copy(), description,
+                                value, damage, amt]
+                synonyms = []
+                
+        itemSet = {}
+        for key in items:
+            itemArr = items[key]
+            if itemArr[0] == "item":
+                item = Item(key, items[key][1], {}, items[key][2],
+                               {}, items[key][3])
+            elif itemArr[0] == "weapon":
+                item = Weapon(key, items[key][1], {}, items[key][2],
+                               {}, items[key][3], items[key][4])
+            elif itemArr[0] == "healing":
+                item = Healing(key, items[key][1], {}, items[key][2],
+                               {}, items[key][3], items[key][5])
+            elif itemArr[0] == "gold":
+                item = Gold(items[key][5])
+
+            itemSet[key] = item
+        return itemSet
 
 class Weapon(Item):
     def __init__(self, title, synonyms, moves, description, children,
                  value, damage):
+        print("initializing a weapon!")
         self.damage = damage
         super().__init__(title, synonyms, moves, description,
                          children, value)
+    def __str__(self):
+            return "{}\n=====\n{}\nDamage: {}\nValue: {}\n".format(self.title,
+                                                       self.description,
+                                                       self.damage,
+                                                       self.value)
 
 class Healing(Item):
     def __init__(self, title, synonyms, moves, description, children,
@@ -289,6 +348,9 @@ class Gold(Item):
 if __name__ == "__main__":
     enemySet = Enemy.readFromTSV("resources/enemies.txt")
     tileSet = MapTile.readFromTSV("resources/tiles.txt")
+    itemSet = Item.readFromTSV("resources/items.txt")
+    for i in itemSet:
+        print(itemSet[i])
 
     tileSet["CavePath_0"].addChild(enemySet["rat"].copy())
     tileSet["CavePath_0"].addChild(enemySet["ogre"].copy())
