@@ -1,0 +1,23 @@
+subclass	item
+title	Solo Cup
+synonyms	cup
+value	0
+description	A red solo cup
+subclass	weapon
+title	sword
+synonyms	sword
+value	5
+damage	10
+description	a rusted sword, slightly more dangerous than a rock
+subclass	gold
+title	coin
+synonyms	coin
+value	10
+amt	10
+description	0
+subclass	healing
+title	hardtack
+synonyms	hardtack
+value	0
+amt	5
+description	A moldy piece of hardtack
