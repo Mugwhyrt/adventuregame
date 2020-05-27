@@ -239,6 +239,52 @@ class Enemy(Prop):
             enemySet[key] = enemy
             
         return enemySet
+"""
+ITEMS
+Includes general carryables, gold, weapons
+"""
+class Item(Prop):
+    def __init__(self, title, synonyms, moves, description, children,
+                 value):
+        self.value = value
+        # TO DO
+        # Moves for all items should include
+        # the search action
+        super().__init__(title, synonyms, moves, description, children)
+
+    def __str__(self):
+        return "{}\n=====\n{}\nValue: {}\n".format(self.title, self.description, self.value)
+
+    def readFromTSV(fileName):
+        pass
+
+class Weapon(Item):
+    def __init__(self, title, synonyms, moves, description, children,
+                 value, damage):
+        self.damage = damage
+        super().__init__(title, synonyms, moves, description,
+                         children, value)
+
+class Healing(Item):
+    def __init__(self, title, synonyms, moves, description, children,
+                 value, amt):
+        self.amt = amt
+        super().__init__(title, synonyms, moves, description,
+                         children, value)
+    def __str__(self):
+        return "{}\n=====\n{}\nValue: {}\nHeals: {} hp".format(self.title,
+                                                               self.description,
+                                                               self.value,
+                                                               self.amt)
+class Gold(Item):
+    def __init__(self, amt):
+        self.amt = amt
+        super().__init__(title="Gold",
+                         synonyms = ["money", "coin", "coins"],
+                         moves = [],
+                         description="A round coin with {} stamped on the front.".format(str(self.amt)),
+                         children = {},
+                         value=self.amt)
     
 if __name__ == "__main__":
     enemySet = Enemy.readFromTSV("resources/enemies.txt")
@@ -249,4 +295,5 @@ if __name__ == "__main__":
     actions = tileSet["CavePath_0"].available_actions()
     for a in actions:
         print(a)
+        
     
