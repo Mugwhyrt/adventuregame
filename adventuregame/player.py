@@ -89,13 +89,17 @@ class Player():
         r = random.randint(0, len(available_moves) - 1)
         self.do_action(available_moves[r])
 
-    def add_loot(self, item, text):
-        print(text)
-        item.available = False
+    #def add_loot(self, item, text):
+    def add_loot(self, item, parent):
+        #print(text)
+        #item.available = False
         if(type(item).__name__ == "Gold"):
             self.gold += item.amt
         else:
             self.inventory.append(item)
+        for c in parent.children:
+            if item == parent.children[c]:
+                parent.children.pop(c)
 
     def buy(self, inventory):
         print("What would you like to buy?")
