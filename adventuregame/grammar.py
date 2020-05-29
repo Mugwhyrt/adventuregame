@@ -19,7 +19,7 @@ actionTable = {"baseTable" : [["verb", "direct object", "preposition", "indirect
                "go south" : [["go", "south", "preposition", "indirect object"], actions.MoveSouth],
                "look inventory" : [["look", "inventory", "preposition", "indirect object"], actions.ViewInventory],
                "heal" : [["heal", "direct object", "preposition", "indirect object"], actions.Heal],
-               "take target" : [["take", "target", "preposition", "indirect object"], actions.Take],
+               "take target from target" : [["take", "target", "from", "target"], actions.Take],
                "attack enemy" : [["attack", "enemy", "preposition", "indirect object"],actions.Attack],
                "flee enemy" : [["flee", "enemy", "preposition", "indirect object"],actions.Flee],
                "buy" : [["buy", "direct object", "preposition", "indirect object"], actions.Buy]}
@@ -29,7 +29,7 @@ actionTable = {"baseTable" : [["verb", "direct object", "preposition", "indirect
 # Returns wordTable, [string, string, string, string], an array corresponding
 #   to the ["verb", "direct object", "preposition", "indirect object"] for some action
 #
-def parser(userInput, moves, targets):
+def parser(userInput, moves, targets, prepositions):
 
     # Word Table contains keys to inform the game
     # which action should be taken
@@ -54,6 +54,14 @@ def parser(userInput, moves, targets):
             wordTable[0] = word
             continue
 
+        # if the word is in prepositions
+        # and it's immediately followed by a target word
+        # then assign
+        if ( word in prepositions
+             and i+1 < len(parsedString)
+             and parsedString[i+1] in targets ):
+            wordTable[2] = word
+            wordTable[3] = parsedString[i+1]
         # if the word is a specified target
         # and that word has not already been identified as
         # an indirect noun
@@ -120,7 +128,11 @@ def getTableElement(tableDictionary, index):
         if len(arr) > index and arr[index] not in elements:
             elements.append(arr[index])
     return elements
-
+"""
+5/29
+TO DO: replace getTableElement with method that returns a dictionary keyed
+for "action", "target", and "prepositions"
+"""
 if __name__ == "__main__":
     
     # Translate Strings Params
