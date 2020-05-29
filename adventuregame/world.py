@@ -36,6 +36,7 @@ def load_tiles():
 
 def load_props():
     enemySet = Enemy.readFromTSV("resources/enemies.txt")
+    itemSet = Item.readFromTSV("resources/items.txt")
     """Parses a file that describes the props in the _world object"""
     with open('resources/stage_1_prop.txt', 'r') as f:
         rows = f.readlines()
