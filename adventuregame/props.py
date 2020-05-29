@@ -146,7 +146,7 @@ class MapTile(Prop):
                         attackString = "attack {}".format(e.title)
                         availMoves[attackString] = attackE
                         """
-                        availMoves.update(e.moves)
+                    availMoves.update(e.getMoves)
                     
         if not self.pathsChecked:
             self.adjacent_moves()
@@ -173,7 +173,13 @@ class MapTile(Prop):
                         print("Enemy does {} damage. You have {} HP remaining.".format(c.damage,
                                                                                        the_player.hp))
                         
-
+    """
+    Added 5/29
+    TO DO:
+    fix how tile descriptions are returned so that
+    text is not permanently appended to the tile
+    
+    """
     def intro_text(self):
         self.available_actions()
         self.moves.update(self.adjacent_moves())
@@ -239,6 +245,27 @@ class Enemy(Prop):
             enemySet[key] = enemy
             
         return enemySet
+    
+    def getMoves(self):
+        moves = {}
+        if self.is_alive():
+            moves.update(self.moves)
+        else:
+            for key in children:
+                if isinstance(children[key][0], Item):
+                    takeString = "take {} from {}".format(children[key][0].title,
+                                                          self.title)
+                    for c in children[key]:
+                        # NOTE: This will cause problems
+                        # when an enemy holds more than
+                        # one instance of some object
+                        # Added 5/29 TO DO: Fix This
+                        moves[takeString] = grammar.actionTable["take target from target"].copy()
+                        moves[takeString][1] = moves[takeString][1](c, self)
+                        moves[takeString][0][1] = c.title
+                        moves[takeString][0][3] = self.title
+        return moves
+            
 """
 ITEMS
 Includes general carryables, gold, weapons
