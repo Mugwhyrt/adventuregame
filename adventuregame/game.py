@@ -58,7 +58,11 @@ def play():
             # parse user input
             actions = grammar.getTableElement(available_actions, 0)
             targets = grammar.getTableElement(available_actions, 1)
-            action_input = grammar.parser(translated_input, actions, targets)
+            targets += grammar.getTableElement(available_actions, 3)
+            prepositions = grammar.getTableElement(available_actions, 2)
+            
+            action_input = grammar.parser(translated_input, actions,
+                                          targets, prepositions)
             print(Fore.WHITE, end  = '\r')
             os.system("cls")
 
