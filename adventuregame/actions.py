@@ -59,8 +59,8 @@ class Flee(Action):
         super().__init__(method=Player.flee, name="Flee", hotkey='f', tile=tile)
 
 class Take(Action):
-    def __init__(self, item, text):
-        super().__init__(method=Player.add_loot, name="Search", hotkey = 'r', item=item, parent=parent)
+    def __init__(self, item, parent):
+        super().__init__(method=Player.add_loot, name="Take", hotkey = 'r', item=item, parent=parent)
 
 class Buy(Action):
     def __init__(self, inventory):
