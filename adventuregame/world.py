@@ -1,5 +1,5 @@
 #import tiles
-from props import MapTile, Enemy
+from props import MapTile, Enemy, Item
 __author__ = 'Phillip Johnson'
 
 _world = {}
@@ -47,5 +47,7 @@ def load_props():
                 prop_arr = cols[x].replace('\n', '').split(',')
                 if prop_arr[0] != '':
                         for prop in prop_arr:
-                                _world[(x, y)].addChild(enemySet[prop].copy())
+                                enemy = enemySet[prop].copy()
+                                #enemy.addChild(itemSet["coin"].copy())
+                                _world[(x, y)].addChild(enemy)
                         
