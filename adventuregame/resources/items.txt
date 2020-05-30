@@ -1,5 +1,5 @@
 subclass	item
-title	Solo Cup
+title	solo cup
 synonyms	cup
 value	0
 description	A red solo cup
