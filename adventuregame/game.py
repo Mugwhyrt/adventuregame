@@ -44,6 +44,8 @@ def play():
             print(Fore.RED + Back.WHITE + "What do you do?")
             # room.available_actions() is {sentence key : [table, action()]}
             available_actions = room.available_actions()
+            for action in available_actions:
+                print(action)
             print(Fore.GREEN + Back.BLACK, end = '\r')
             # get user input
             user_input = input('Action: ')
@@ -51,18 +53,25 @@ def play():
             """
             process user input
             """
+            
             # translate user input
             translated_input = grammar.translator(user_input, {},
                                                   vcb.verbs_dict,
-                                                  vcb.nouns_dict)
+                                                  vcb.nouns_dict,
+                                                  vcb.prepositions_dict)
+            #print("\nuser_input: {}\ntranslated_input: {}\n".format(user_input,
+            #                                                    translated_input))
             # parse user input
             actions = grammar.getTableElement(available_actions, 0)
             targets = grammar.getTableElement(available_actions, 1)
             targets += grammar.getTableElement(available_actions, 3)
             prepositions = grammar.getTableElement(available_actions, 2)
-            
+            #print("actions: {}\ntargets: {}\npreps: {}\n".format(actions,
+            #                                                   targets,
+            #                                                   prepositions))
             action_input = grammar.parser(translated_input, actions,
                                           targets, prepositions)
+            #print("\naction_input: {}\n".format(action_input))
             print(Fore.WHITE, end  = '\r')
             os.system("cls")
 
