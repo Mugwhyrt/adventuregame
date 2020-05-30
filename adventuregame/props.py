@@ -146,7 +146,7 @@ class MapTile(Prop):
                         attackString = "attack {}".format(e.title)
                         availMoves[attackString] = attackE
                         """
-                    availMoves.update(e.getMoves)
+                    availMoves.update(e.getMoves())
                     
         if not self.pathsChecked:
             self.adjacent_moves()
@@ -251,11 +251,11 @@ class Enemy(Prop):
         if self.is_alive():
             moves.update(self.moves)
         else:
-            for key in children:
-                if isinstance(children[key][0], Item):
-                    takeString = "take {} from {}".format(children[key][0].title,
+            for key in self.children:
+                if isinstance(self.children[key][0], Item):
+                    takeString = "take {} from {}".format(self.children[key][0].title,
                                                           self.title)
-                    for c in children[key]:
+                    for c in self.children[key]:
                         # NOTE: This will cause problems
                         # when an enemy holds more than
                         # one instance of some object
@@ -362,7 +362,7 @@ class Healing(Item):
 class Gold(Item):
     def __init__(self, amt):
         self.amt = amt
-        super().__init__(title="Gold",
+        super().__init__(title="gold",
                          synonyms = ["money", "coin", "coins"],
                          moves = [],
                          description="A round coin with {} stamped on the front.".format(str(self.amt)),
