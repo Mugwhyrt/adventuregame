@@ -69,19 +69,7 @@ def parser(userInput, moves, targets, prepositions):
             # then it is the direct noun
             wordTable[1] = word
             continue
-        """
-        No actions require prepositions just yet
-        So commenting out to simplify coding process
         
-        # check for prepositions and indirect objects
-        for p in prepositions:
-            # if the word is a preposition
-            # and the following word is in the list of acceptable targets
-            if word in prepositions[p] and i+1 < len(parsedString) and parsedString[i+1] in targets:
-                wordTable[2] = p
-                wordTable[3] = parsedString[i+1]
-                continue
-                """
     return wordTable
 
 # Translator Method
@@ -89,18 +77,15 @@ def parser(userInput, moves, targets, prepositions):
 # Ex: if wordTranslations = {"enemy" : ["witch", "ogre"]} then "attack witch" would become "attack enemy"
 # Returns a string with the subbed words
 #
-# Translator is for instances where there are context specific nouns that are equivalent to some
-# existing term in a wordTable from actionTable. Translator simply substitutes words, it does
-# not return a formatted word table
-
-def translator(userInput, wordTranslations, verbs, nouns):
+def translator(userInput, wordTranslations, verbs, nouns, prepositions):
     # replace any words using wordTranslations (for situation specific words)
     userInput = stringReplace(userInput, wordTranslations)
     # replace words with key verbs
     userInput = stringReplace(userInput, verbs)
     # replace words with key nouns
     userInput = stringReplace(userInput, nouns)
-    
+    # replace words with key nouns
+    userInput = stringReplace(userInput, prepositions)
     return userInput
 
 # String Replace
