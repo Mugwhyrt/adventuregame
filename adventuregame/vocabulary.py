@@ -21,8 +21,8 @@ verbs_dict = {"go" : ["go", "head", "move", "walk", "run", "travel", "leave",
          "look" : ["look", "search", "inspect", "view", "peep",
                    "scrutinize", "survey", "observe", "review",
                    "probe", "investigate"],
-         "buy" : ["buy", "purchase", "procure", "acquire", "obtain",
-                  "take"],
+        # Added 5/30 TO DO: clarify distinction between 'take' and 'buy' verbs
+         "buy" : ["buy", "purchase", "procure", "acquire", "obtain"],
          "steal" : ["steal",  "loot", "snatch", "pickpocket", "pilfer",
                     "pilfer", "swipe", "pinch", "poach", "shoplift"],
          "flee" : ["flee", "escape","decamp", "scram", "hightail", "bolt",
@@ -30,7 +30,8 @@ verbs_dict = {"go" : ["go", "head", "move", "walk", "run", "travel", "leave",
          "eat" : ["eat", "drink", "consume", "devour", "swallow",
                   "dine", "bite", "chew", "snack", "sup",
                   "feast", "gulp", "slup", "guzzle", "quaff", "gargle"],
-         "heal" : ["heal"]}
+         "heal" : ["heal"],
+         "take" : ["take"]}
 
 # Noun Dictionary
 # dictionary for each noun for some action
@@ -47,6 +48,7 @@ prepositions_dict = {"with" : ["with", "using"],
                 "under" : ["under", "below", "beneath"],
                 "above" : ["above", "over"],
                 "in" : ["in", "among", "amongst", "within", "inside",
-                        "amidst", "around"]}
+                        "amidst", "around"],
+                "from" : ["from"]}
 # Articles Array
 articles = ["the", "a", "an", "ye", "thee", "yon"]
